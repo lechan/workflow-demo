@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    // … 其他选项 …
+    "noImplicitAny": false,       // 关闭隐式 any 报错
+    "suppressImplicitAnyIndexErrors": true // 可选：压制索引签名为 any 的警告
+  }
+}
