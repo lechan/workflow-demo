@@ -115,6 +115,21 @@ export const HistoryButton = () => {
   
   const save = () => {
     console.log('保存')
+    
+    // 重置所有节点和边的状态样式
+    if (graph) {
+      graph.getNodes().forEach(node => {
+        node.setAttrByPath('header/fill', '#f5f5f5')
+        node.setAttrByPath('statusIndicator/fill', '#f5f5f5')
+      })
+      
+      graph.getEdges().forEach(edge => {
+        edge.setAttrByPath('line/stroke', '#A2B1C3')
+        edge.setAttrByPath('line/strokeWidth', 1)
+        edge.setAttrByPath('line/strokeDasharray', null)
+      })
+    }
+    
     const graphData = graph?.toJSON()
     localStorage.setItem('graphData', JSON.stringify(graphData))
     console.log(graphData)
@@ -183,6 +198,7 @@ export const HistoryButton = () => {
             incomingEdges?.forEach(edge => {
               edge.setAttrByPath('line/stroke', statusColor['running'])
               edge.setAttrByPath('line/strokeWidth', 2)
+              edge.setAttrByPath('line/strokeDasharray', '5,5')
             })
           }
         }
