@@ -1,5 +1,5 @@
 import './App.css'
-import ConductorWorkflowGraph from './components/ConductorWorkflowGraph/index';
+import ConductorWorkflowGraph from './pages/ConductorWorkflowGraph/index';
 
 function App() {
   return (

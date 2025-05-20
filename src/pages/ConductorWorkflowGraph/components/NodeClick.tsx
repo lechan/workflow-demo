@@ -14,7 +14,7 @@ export const NodeClick = () => {
     setSelectedNode(node);
     console.log('Node clicked:', node);
     const { store: { data: { nodeType } } } = node
-    if (nodeType) {
+    if (nodeType && (nodeType !== 'fork' && nodeType!== 'join' && nodeType!== 'end')) {
       setDrawerVisible(true);
     }
   };

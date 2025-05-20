@@ -61,11 +61,12 @@ const DndPanel = () => {
     e: React.MouseEvent<Element, MouseEvent>,
     node: NodeType,
   ) => {
+    console.log(node.id)
     startDrag(
       {
         id: uuidv4(),
         label: node.label,
-        nodeType: node.label,
+        nodeType: node.id,
         ...defaultNodes,
         attrs: {
           ...defaultNodes.attrs,
@@ -110,9 +111,10 @@ const DndPanel = () => {
       {
         id: uuidv4(),
         label: node.label,
-        ...functionNode[node.id],
+        ...functionNode[node.id as keyof typeof functionNode],
+        nodeType: node.id,
         ports: {
-          ...functionPort[node.id],
+          ...functionPort[node.id as keyof typeof functionNode],
         }
       },
       e,

@@ -1,11 +1,11 @@
 import { XFlow, XFlowGraph, Grid, Background, Snapline, History, Clipboard, Control } from "@antv/xflow";
-import { InitNode } from "./InitNode";
-import { defaultEdges } from "./edges";
-import { HistoryButton } from './header'
-import { DndPanel } from './DndPanel';
-import "./index.less";
-import { NodeClick } from "./NodeClick";
-import { KeyboardBehavior } from "./KeyboardBehavior";
+import { InitNode } from "./components/InitNode";
+import { defaultEdges } from "./components/edges";
+import { HistoryButton } from './components/header'
+import { DndPanel } from './components/DndPanel';
+import "./components/index.less";
+import { NodeClick } from "./components/NodeClick";
+import { KeyboardBehavior } from "./components/KeyboardBehavior";
 
 const ConductorWorkflowGraph = () => {
   
