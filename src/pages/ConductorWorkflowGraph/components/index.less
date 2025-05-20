@@ -54,3 +54,22 @@
   bottom: 24px;
   font-size: 16px;
 }
+
+/* 节点状态样式 */
+.node-status {
+  &-success {
+    rect[selector="header"] {
+      fill: #52c41a;
+    }
+  }
+  &-failure {
+    rect[selector="header"] {
+      fill: #f5222d;
+    }
+  }
+  &-running {
+    rect[selector="header"] {
+      fill: #1890ff;
+    }
+  }
+}

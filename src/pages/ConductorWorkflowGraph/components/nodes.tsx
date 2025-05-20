@@ -58,13 +58,15 @@ export const defaultNodes = {
       args: {
         x: '100%',
         y: 0,
-        offset: { x: -15, y: 15 },
+        offset: { x: 0, y: 0 },
       },
     },
   ],
 }
 
 export const startNodes = {
+  shape: 'rect',
+  ...defaultNodes,
   width: 50,
   height: 50,
   attrs: {

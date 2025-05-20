@@ -39,7 +39,6 @@ const ConductorWorkflowGraph: React.FC = () => {
               connectionPoint: 'anchor',
               connector: "rounded",
               validateConnection(graph) {
-                console.log('graph', graph)
                 // 1. 仅允许 out -> in 的连接
                 const sourceGroup = graph.sourcePort
                 const targetGroup = graph.targetPort

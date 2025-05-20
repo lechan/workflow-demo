@@ -2,7 +2,7 @@ import { useHistory, useClipboard, useGraphInstance, useGraphStore } from '@antv
 import { Button, Space } from 'antd'
 import type { Workflow, Task, WorkflowRawData, Node, Edge } from './types'
 
-function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ""): Workflow {
+function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ''): Workflow {
   const cells = workflowRawData.graphData.cells;
   const nodes = cells.filter((c) => c.shape === 'rect' && c.nodeType) as Node[];
   const edges = cells.filter((c) => c.shape === 'edge') as Edge[];
@@ -39,7 +39,7 @@ function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ""): W
     // 添加当前节点任务
     branchTasks.push({
       name: type,
-      taskReferenceName: `${type}_ref_${nodeId}`,
+      taskReferenceName: nodeId,
       type: type.toUpperCase() as Task['type'],
     });
 
@@ -50,13 +50,13 @@ function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ""): W
       const nextNode = nodeMap[nextId];
       // 如果下一节点是 join，则将当前节点视为分支末尾
       if (nextNode?.nodeType?.toLowerCase() === 'join') {
-        branchEndRefs.push(`${type}_ref_${nodeId}`);
+        branchEndRefs.push(nodeId);
       } else {
         gatherBranchTasks(nextId, branchTasks, branchEndRefs);
       }
     } else {
       // 无后继或多后继（不再深入）
-      branchEndRefs.push(`${type}_ref_${nodeId}`);
+      branchEndRefs.push(nodeId);
     }
   }
 
@@ -76,7 +76,7 @@ function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ""): W
     // 插入 FORK
     tasks.push({
       name: 'fork',
-      taskReferenceName: `fork_ref_${forkId}`,
+      taskReferenceName: forkId,
       type: 'FORK',
       forkTasks: forkTasks,
     });
@@ -85,7 +85,7 @@ function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ""): W
     if (joinId) {
       tasks.push({
         name: 'join',
-        taskReferenceName: `join_ref_${joinId}`,
+        taskReferenceName: joinId,
         type: 'JOIN',
         joinOn: branchEnds,
       });
@@ -124,6 +124,73 @@ export const HistoryButton = () => {
   const onPaste = () => {
     paste({ offset: 50 })
   }
+
+  const run = () => {
+    console.log('执行')
+    const mockNodeStatus = [
+      { id: 'start', status: 'success' },
+      { id: '2d8f4c9a-975f-45d7-9c7b-444383281527', status: 'success' },
+      { id: '713ee8b8-d008-4690-9de4-2faa33a7bb79', status: 'success' },
+      { id: 'd4394e17-8de1-4f6c-a743-d43ac04507ee', status:'success' },
+      { id: '88530115-1907-4143-b871-85696d01d69c', status: 'success' },
+      { id: '975315ff-3b57-40c6-8b3c-b06255e198d5', status: 'failure' },
+      { id: '3a44d518-96ea-47a1-94fe-3552c121a395', status: 'running' },
+    ]
+    const statusColor = {
+      success: '#95de64',
+      failure: '#ff7875',
+      running: '#69c0ff'
+    }
+    const graphAddStatus = () => {
+      if (!graph) return
+      
+      // 首先清除所有边的动画样式
+      graph.getEdges().forEach(edge => {
+        edge.setAttrByPath('line/stroke', '#A2B1C3')
+      })
+      
+      mockNodeStatus.forEach(({ id, status }) => {
+        const node = graph.getCellById(id)
+        if (node) {
+          node.setData({
+            ...node.getData(),
+            status
+          })
+          
+          node.setAttrByPath('header/fill', statusColor[status as keyof typeof statusColor] || '#f5f5f5')
+          node.setAttrByPath('statusIndicator/fill', statusColor[status as keyof typeof statusColor] || '#f5f5f5')
+          
+          // 如果是running状态的节点，处理其前置边
+          if (status === 'success') {
+            const incomingEdges = graph.getIncomingEdges(node)
+            incomingEdges?.forEach(edge => {
+              edge.setAttrByPath('line/stroke', statusColor['success'])
+              edge.setAttrByPath('line/strokeWidth', 2)
+            })
+          } else if (status === 'failure') {
+            const incomingEdges = graph.getIncomingEdges(node)
+            const outgoingEdges = graph.getOutgoingEdges(node)
+            incomingEdges?.forEach(edge => {
+              edge.setAttrByPath('line/stroke', statusColor['failure'])
+              edge.setAttrByPath('line/strokeWidth', 2)
+            })
+            outgoingEdges?.forEach(edge => {
+              edge.setAttrByPath('line/stroke', statusColor['failure'])
+              edge.setAttrByPath('line/strokeWidth', 2)
+            })
+          } else if (status === 'running') {
+            const incomingEdges = graph.getIncomingEdges(node)
+            incomingEdges?.forEach(edge => {
+              edge.setAttrByPath('line/stroke', statusColor['running'])
+              edge.setAttrByPath('line/strokeWidth', 2)
+            })
+          }
+        }
+      })
+    }
+    
+    graphAddStatus()
+  }
   return (
     <div className="xflow-header">
       <Space>
@@ -141,6 +208,9 @@ export const HistoryButton = () => {
         </Button>
         <Button onClick={save}>
           保存
+        </Button>
+        <Button onClick={run}>
+          执行
         </Button>
       </Space>
     </div>
