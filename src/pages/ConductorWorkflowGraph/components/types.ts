@@ -23,7 +23,9 @@ export interface Node {
 export interface Edge {
   shape: 'edge';
   nodeType?: string;
-  source: { cell: string };
+  source: {
+    [x: string]: any; cell: string 
+};
   target: { cell: string };
 }
 
