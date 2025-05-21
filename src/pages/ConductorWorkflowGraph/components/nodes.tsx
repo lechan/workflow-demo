@@ -136,9 +136,8 @@ Graph.registerNodeTool('outputPortsPlusBtn', {
   y: '30%',
   offset: { x: -20, y: 0 },
   onClick: ({ cell }) => {
-    console.log(cell)
     const ports = cell.getPorts()
-    const outputPorts = ports.filter(port => port.group === 'output')
+    const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
     if (outputPorts.length < 5) {
       cell.addPort({
         id: `output${outputPorts.length + 1}`,
@@ -180,10 +179,9 @@ Graph.registerNodeTool('outputPortsMinusBtn', {
   offset: { x: -20, y: 0 },
   onClick({ cell }) {
     const ports = cell.getPorts()
-    const outputPorts = ports.filter(port => port.group === 'output')
+    const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
     if (outputPorts.length > 2) {
       const lastPort = outputPorts[outputPorts.length - 1]
-      console.log(cell)
       cell.removePort(lastPort.id)
     }
   },
@@ -221,7 +219,7 @@ Graph.registerNodeTool('inputPortsPlusBtn', {
   offset: { x: 20, y: 0 },
   onClick({ cell }) {
     const ports = cell.getPorts()
-    const inputPorts = ports.filter(port => port.group === 'input')
+    const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
     if (inputPorts.length < 5) {
       cell.addPort({
         id: `input${inputPorts.length + 1}`,
@@ -263,7 +261,7 @@ Graph.registerNodeTool('inputPortsMinusBtn', {
   offset: { x: 20, y: 0 },
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
-    const inputPorts = ports.filter(port => port.group === 'input')
+    const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
     if (inputPorts.length > 2) {
       const lastPort = inputPorts[inputPorts.length - 1]
       cell.removePort(lastPort.id)

@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import { useHistory, useClipboard, useGraphInstance, useGraphStore } from '@antv/xflow'
 import { Button, Space } from 'antd'
+import { CopyOutlined, DeleteOutlined, EditOutlined, PlayCircleOutlined, RedoOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons'
 import type { Workflow, Task, WorkflowRawData, Node, Edge } from './types'
+import { startNodes } from './nodes'
+import { startPorts } from './ports'
 
 function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ''): Workflow {
   const cells = workflowRawData.graphData.cells;
@@ -102,11 +106,13 @@ function convertWorkflow(workflowRawData: WorkflowRawData, workflowName = ''): W
   };
 }
 
-export const HistoryButton = () => {
+export const HandlerArea = ({ options, setOptions }: { options: { readonly: boolean }, setOptions: (options: { readonly: boolean }) => void }) => {
   const graph = useGraphInstance()
   const { undo, redo, canUndo, canRedo } = useHistory()
   const { copy, paste } = useClipboard()
   const nodes = useGraphStore((state) => state.nodes)
+  const setInitData = useGraphStore((state) => state.initData)
+  const [hasSaved, setHasSaved] = useState(false);
   const onCopy = () => {
     const selected = nodes.filter((node) => node.selected)
     const ids: string[] = selected.map((node) => node.id || '')
@@ -135,13 +141,37 @@ export const HistoryButton = () => {
     console.log(graphData)
     const workflowData = convertWorkflow({ graphData: graphData } as WorkflowRawData, 'test')
     console.log(workflowData)
+    setOptions({ readonly: true })
   }
   const onPaste = () => {
     paste({ offset: 50 })
   }
-
+  const edit = () => {
+    console.log('编辑')
+    setOptions({ readonly: false })
+  }
+  const reset = () => {
+    console.log('重置')
+    localStorage.removeItem('graphData')
+    setInitData({
+      nodes: [
+        {
+          id: 'start',
+          label: '开始',
+          x: 100,
+          y: 50,
+          ...startNodes,
+          ports: {
+            ...startPorts,
+          }
+        },],
+      edges: [],
+    })
+    // 清空history
+    graph?.cleanHistory()
+  }
   const run = () => {
-    console.log('执行')
+    console.log('执行')  
     const mockNodeStatus = [
       { id: 'start', status: 'success' },
       { id: '2d8f4c9a-975f-45d7-9c7b-444383281527', status: 'success' },
@@ -206,26 +236,81 @@ export const HistoryButton = () => {
     }
     
     graphAddStatus()
+
+    // 画布设置只读
+    // setOptions({ readonly: true })
   }
   return (
     <div className="xflow-header">
       <Space>
-        <Button onClick={onCopy}>
-          复制节点
-        </Button>
-        <Button onClick={onPaste}>
-          粘贴节点
-        </Button>
-        <Button onClick={undo} disabled={!canUndo}>
+        {!options.readonly && (
+          <>
+            <Button 
+              onClick={onCopy} 
+              disabled={!nodes.some(n => n.selected)}
+              icon={<CopyOutlined />}
+              type="primary"
+              ghost
+            >
+              复制节点
+            </Button>
+            <Button 
+              onClick={onPaste} 
+              icon={<CopyOutlined />}
+              type="primary"
+              ghost
+            >
+              粘贴节点
+            </Button>
+          </>
+        )}
+        <Button 
+          onClick={undo} 
+          disabled={!canUndo}
+          icon={<UndoOutlined />}
+        >
           撤销
         </Button>
-        <Button onClick={redo} disabled={!canRedo}>
+        <Button 
+          onClick={redo} 
+          disabled={!canRedo}
+          icon={<RedoOutlined />}
+        >
           还原
         </Button>
-        <Button onClick={save}>
-          保存
+        {options.readonly ? (
+          <Button 
+            onClick={edit} 
+            icon={<EditOutlined />}
+            type="primary"
+          >
+            编辑
+          </Button>
+        ) : (
+          <Button 
+            onClick={() => {
+              save();
+              setHasSaved(true);
+            }} 
+            icon={<SaveOutlined />}
+            type="primary"
+          >
+            保存
+          </Button>
+        )}
+        <Button 
+          onClick={reset} 
+          icon={<DeleteOutlined />}
+          danger
+        >
+          重置
         </Button>
-        <Button onClick={run}>
+        <Button 
+          onClick={run} 
+          icon={<PlayCircleOutlined />}
+          type="primary"
+          disabled={!hasSaved}
+        >
           执行
         </Button>
       </Space>

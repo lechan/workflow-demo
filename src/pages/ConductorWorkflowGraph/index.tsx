@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { XFlow, XFlowGraph, Grid, Background, Snapline, History, Clipboard, Control } from "@antv/xflow";
 import { InitNode } from "./components/InitNode";
 import { defaultEdges } from "./components/edges";
-import { HistoryButton } from './components/header'
+import { HandlerArea } from './components/header'
 import { DndPanel } from './components/DndPanel';
 import "./components/index.less";
 import { NodeClick } from "./components/NodeClick";
@@ -10,10 +10,13 @@ import { KeyboardBehavior } from "./components/KeyboardBehavior";
 import type { Cell } from '@antv/x6';
 
 const ConductorWorkflowGraph: React.FC = () => {
+  const [options, setOptions] = useState({
+    readonly: false,
+  })
   return (
     <div className="xflow-guide">
       <XFlow>
-        <HistoryButton />
+        <HandlerArea options={options} setOptions={setOptions} />
         <History />
         <Clipboard useLocalStorage />
         <div className="xflow-container">
@@ -22,6 +25,7 @@ const ConductorWorkflowGraph: React.FC = () => {
             className="xflow-graph"
             zoomable
             minScale={0.5}
+            readonly={options.readonly}
             pannable
             panOptions={{
               eventTypes: ["leftMouseDown"],
