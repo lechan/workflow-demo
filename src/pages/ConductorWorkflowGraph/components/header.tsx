@@ -227,7 +227,6 @@ export const HandlerArea: React.FC<{
   );
   const [isEditName, setIsEditName] = useState(false);
   const handleChangeSystem = (value: string) => {
-    console.log(value)
     if (systemName === '') {
       setSystemName(value)
     } else {
@@ -294,7 +293,6 @@ export const HandlerArea: React.FC<{
     const programNodes = ['shell', 'python', 'promql'];
     const hasProgramNode = nodes.some(node => {
       const nodeType = node.store?.data?.nodeType?.toLowerCase()
-      console.log(nodeType)
       return programNodes.includes(nodeType);
     });
     if (!hasProgramNode) {
@@ -373,17 +371,33 @@ export const HandlerArea: React.FC<{
     graph?.cleanHistory();
     setHasSaved(false);
   };
+  const initMockNodeStatus = () => {
+    const nodes = graph?.getNodes();
+    if (nodes && nodes.length) {
+      console.log(nodes);
+      return nodes.map((node, index) => {
+        if (node.id === 'start') {
+          return { id: 'start', status: "success" };
+        } else if (node.id === 'end') {
+          return { id: 'end', status: "running" };
+        } else {
+          if (index < nodes.length - 3) {
+            return { id: node.id, status: "success" };
+          } else if (index === nodes.length - 2) {
+            return { id: node.id, status: "running" };
+          } else {
+            return { id: node.id, status: "success" };
+          }
+        }
+      })
+    } else {
+      return []
+    }
+  };
   const run = () => {
     console.log("执行");
-    const mockNodeStatus = [
-      { id: "start", status: "success" },
-      { id: "2d8f4c9a-975f-45d7-9c7b-444383281527", status: "success" },
-      { id: "713ee8b8-d008-4690-9de4-2faa33a7bb79", status: "success" },
-      { id: "d4394e17-8de1-4f6c-a743-d43ac04507ee", status: "success" },
-      { id: "88530115-1907-4143-b871-85696d01d69c", status: "success" },
-      { id: "975315ff-3b57-40c6-8b3c-b06255e198d5", status: "failure" },
-      { id: "3a44d518-96ea-47a1-94fe-3552c121a395", status: "running" },
-    ];
+    setHasSaved(true);
+    const mockNodeStatus = initMockNodeStatus();
     const statusColor = {
       success: "#95de64",
       failure: "#ff7875",

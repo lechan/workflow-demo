@@ -85,7 +85,17 @@ const DndPanel: React.FC = () => {
         },
         ports: {
           ...defaultPorts,
-        }
+        },
+        tools: [
+          {
+            name: 'button-remove',
+            args: {
+              x: '100%',
+              y: 0,
+              offset: { x: 0, y: 0 },
+            },
+          },
+        ],
       },
       e,
     )
@@ -109,7 +119,7 @@ const DndPanel: React.FC = () => {
   ) => {
     startDrag(
       {
-        id: uuidv4(),
+        id: node.id === 'end' ? 'end' : uuidv4(),
         label: node.label,
         ...functionNode[node.id as keyof typeof functionNode],
         nodeType: node.id,
