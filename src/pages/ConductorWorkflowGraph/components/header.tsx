@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   useHistory,
   useClipboard,
@@ -198,7 +198,10 @@ function convertWorkflow(
 }
 
 
-export const HandlerArea = ({
+export const HandlerArea: React.FC<{
+  options: { readonly: boolean };
+  setOptions: (options: { readonly: boolean }) => void;
+}> = ({
   options,
   setOptions,
 }: {
@@ -258,8 +261,62 @@ export const HandlerArea = ({
     copy(ids);
   };
 
+  const validateWorkflow = () => {
+    if (!graph) return { isValid: false, error: '图形实例未初始化' };
+
+    const nodes = graph.getNodes();
+    // const edges = graph.getEdges();
+
+    // 1. 检查所有端口是否都有连接
+    let unconnectedPorts = false;
+    let unconnectedPortNodeId = '';
+    nodes.forEach(node => {
+      const ports = node.getPorts();
+      ports.forEach(port => {
+        const connectedEdges = graph.getConnectedEdges(node, { portId: port.id });
+        if (connectedEdges.length === 0) {
+          unconnectedPorts = true;
+          unconnectedPortNodeId = node.id;
+        }
+      });
+    });
+    if (unconnectedPorts) {
+      return { isValid: false, error: `节点 ${unconnectedPortNodeId} 存在未连接的端口` };
+    }
+
+    // 2. 检查是否有end节点
+    const hasEndNode = nodes.some(node => node.store?.data?.nodeType === 'end');
+    if (!hasEndNode) {
+      return { isValid: false, error: '工作流缺少结束节点' };
+    }
+
+    // 3. 检查是否有至少一个程序节点
+    const programNodes = ['shell', 'python', 'promql'];
+    const hasProgramNode = nodes.some(node => {
+      const nodeType = node.store?.data?.nodeType?.toLowerCase()
+      console.log(nodeType)
+      return programNodes.includes(nodeType);
+    });
+    if (!hasProgramNode) {
+      return { isValid: false, error: '工作流至少需要一个程序节点（shell、python或promql）' };
+    }
+
+    return { isValid: true };
+  };
+
   const save = () => {
     console.log("保存");
+    
+    // 验证工作流
+    const validation = validateWorkflow();
+    if (!validation.isValid) {
+      Modal.error({
+        title: '保存失败提醒',
+        content: validation.error,
+      });
+      return;
+    }
+
     setHasSaved(true);
     // 重置所有节点和边的状态样式
     if (graph) {
@@ -402,7 +459,7 @@ export const HandlerArea = ({
           allowClear
           onChange={handleChangeSystem}
         ></Select>
-        <Space.Compact style={{ width: "100%" }}>
+        <Input.Group compact style={{ display: "flex" }}>
           <Input readOnly={!isEditName} style={{ width: 200 }} value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
           {isEditName ? (
             <Button
@@ -417,7 +474,7 @@ export const HandlerArea = ({
               type="primary"
             ></Button>
           )}
-        </Space.Compact>
+        </Input.Group>
 
         <Button onClick={undo} disabled={!canUndo} icon={<UndoOutlined />}>
           撤销操作

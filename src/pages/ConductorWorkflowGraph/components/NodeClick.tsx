@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import NodeDrawer from './NodeDrawer';
 import { useGraphEvent } from '@antv/xflow';
 
-export const NodeClick = () => {
+export const NodeClick: React.FC = () => {
   useGraphEvent('node:click', ({ node }) => {
     handleNodeClick(node);
   })

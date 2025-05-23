@@ -13,7 +13,7 @@ interface NodeType {
   background: string
 }
 
-const DndPanel = () => {
+const DndPanel: React.FC = () => {
   const { startDrag } = useDnd()
   const nodeTypes: NodeType[] = [
     {

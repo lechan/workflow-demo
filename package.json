@@ -20,7 +20,7 @@
     "@antv/x6-react-shape": "^2.2.3",
     "@antv/xflow": "^2.1.13",
     "@types/uuid": "^10.0.0",
-    "antd": "^5.25.1",
+    "antd": "^4.24.15",
     "dagre": "^0.8.5",
     "dayjs": "^1.11.13",
     "insert-css": "^2.0.0",
