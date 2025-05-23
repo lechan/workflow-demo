@@ -318,10 +318,10 @@ export const HandlerArea: React.FC<{
     setHasSaved(true);
     // 重置所有节点和边的状态样式
     if (graph) {
-      graph.getNodes().forEach((node) => {
-        node.setAttrByPath("header/fill", "#f5f5f5");
-        node.setAttrByPath("statusIndicator/fill", "#f5f5f5");
-      });
+      // graph.getNodes().forEach((node) => {
+      //   node.setAttrByPath("header/fill", "#f5f5f5");
+      //   node.setAttrByPath("statusIndicator/fill", "#f5f5f5");
+      // });
 
       graph.getEdges().forEach((edge) => {
         edge.setAttrByPath("line/stroke", "#A2B1C3");

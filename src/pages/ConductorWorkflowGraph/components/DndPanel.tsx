@@ -33,6 +33,17 @@ const DndPanel: React.FC = () => {
       label: 'PromQL',
       icon: '📊',
       background: '#f6ffed'
+    },
+    {
+      id: 'LocalFile',
+      label: '本地文件',
+      icon: '📁',
+      background: '#f9f0ff'
+    },{
+      id: 'RemoteFile',
+      label: '远程抓取',
+      icon: '☁️',
+      background: '#e6fffb'
     }
   ]
 
@@ -41,19 +52,19 @@ const DndPanel: React.FC = () => {
       id: 'fork',
       label: '分支节点',
       icon: '🔧',
-      background: '#fff1f0'
+      background: '#f6ffed'
     },
     {
       id: 'join',
       label: '汇聚节点',
       icon: '🔗',
-      background: '#e6f7ff'
+      background: '#fff7e6'
     },
     {
       id: 'end',
       label: '结束',
       icon: '🏁',
-      background: '#e6f7ff'
+      background: '#fff1f0'
     }
   ]
 

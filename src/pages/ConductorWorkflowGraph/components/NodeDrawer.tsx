@@ -48,6 +48,18 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
             </Form.Item>
           </>
         );
+        case 'LocalFile':
+          return (
+            <>
+              本地文件
+            </>
+          );
+          case 'RemoteFile':
+            return (
+              <>
+                远程抓取
+              </>
+            );
       default:
         return null;
     }

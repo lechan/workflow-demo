@@ -63,7 +63,7 @@ export const startNodes = {
     body: {
       stroke: '#8f8f8f',
       strokeWidth: 1,
-      fill: '#fff',
+      fill: '#e6f7ff',  // 浅蓝色背景
       rx: 6,
       ry: 6,
     },
@@ -77,7 +77,7 @@ export const endNodes = {
     body: {
       stroke: '#8f8f8f',
       strokeWidth: 1,
-      fill: '#fff',
+      fill: '#fff1f0',  // 浅红色背景
       rx: 6,
       ry: 6,
     },
@@ -123,16 +123,19 @@ Graph.registerNodeTool('outputPortsPlusBtn', {
     },
   ],
   x: '100%',
-  y: '30%',
-  offset: { x: -20, y: 0 },
+  y: '33%',
+  offset: { x: -20, y: -10 },
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
     const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
-    if (outputPorts.length < 5) {
+    if (outputPorts.length < 50) {
       cell.addPort({
         id: `output${outputPorts.length + 1}`,
         group: 'output',
       })
+      // 动态调整节点高度，基础高度120，每个端口增加20的高度
+      const newHeight = Math.max(120, 120 + (outputPorts.length + 1) * 20)
+      cell.resize(120, newHeight)
     }
   },
 }, true)
@@ -165,14 +168,17 @@ Graph.registerNodeTool('outputPortsMinusBtn', {
     },
   ],
   x: '100%',
-  y: '70%',
-  offset: { x: -20, y: 0 },
+  y: '66%',
+  offset: { x: -20, y: 10 },
   onClick({ cell }) {
     const ports = cell.getPorts()
     const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
     if (outputPorts.length > 2) {
       const lastPort = outputPorts[outputPorts.length - 1]
       cell.removePort(lastPort.id)
+      // 动态调整节点高度
+      const newHeight = Math.max(120, 120 + (outputPorts.length - 1) * 20)
+      cell.resize(120, newHeight)
     }
   },
 }, true)
@@ -205,16 +211,19 @@ Graph.registerNodeTool('inputPortsPlusBtn', {
     },
   ],
   x: '0%',
-  y: '30%',
-  offset: { x: 20, y: 0 },
+  y: '33%',
+  offset: { x: 20, y: -10 },
   onClick({ cell }) {
     const ports = cell.getPorts()
     const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
-    if (inputPorts.length < 5) {
+    if (inputPorts.length < 50) {
       cell.addPort({
         id: `input${inputPorts.length + 1}`,
         group: 'input',
       })
+      // 动态调整节点高度
+      const newHeight = Math.max(120, 120 + (inputPorts.length + 1) * 20)
+      cell.resize(120, newHeight)
     }
   },
 }, true)
@@ -247,14 +256,17 @@ Graph.registerNodeTool('inputPortsMinusBtn', {
     },
   ],
   x: '0%',
-  y: '70%',
-  offset: { x: 20, y: 0 },
+  y: '66%',
+  offset: { x: 20, y: 10 },
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
     const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
     if (inputPorts.length > 2) {
       const lastPort = inputPorts[inputPorts.length - 1]
       cell.removePort(lastPort.id)
+      // 动态调整节点高度
+      const newHeight = Math.max(120, 120 + (inputPorts.length - 1) * 20)
+      cell.resize(120, newHeight)
     }
   },
 }, true)
@@ -266,7 +278,7 @@ export const forkNodes = {
     body: {
       stroke: '#d9d9d9',
       strokeWidth: 1,
-      fill: '#fff',
+      fill: '#f6ffed',  // 浅绿色背景
       rx: 6,
       ry: 6,
       refWidth: '100%',
@@ -298,7 +310,7 @@ export const joinNodes = {
     body: {
       stroke: '#d9d9d9',
       strokeWidth: 1,
-      fill: '#fff',
+      fill: '#fff7e6',  // 浅橙色背景
       rx: 6,
       ry: 6,
       refWidth: '100%',
