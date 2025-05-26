@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { XFlow, XFlowGraph, Grid, Background, Snapline, History, Clipboard, Control } from "@antv/xflow";
+import { LockOutlined } from '@ant-design/icons';
 import { InitNode } from "./components/InitNode";
 import { defaultEdges } from "./components/edges";
 import { HandlerArea } from './components/header'
@@ -13,15 +14,27 @@ import type { Cell } from '@antv/x6';
 const ConductorWorkflowGraph: React.FC = () => {
   const [options, setOptions] = useState({
     readonly: false,
-  })
+  });
+  const [systemName, setSystemName] = useState('');
   return (
     <AppProvider>
       <div className="xflow-guide">
         <XFlow>
-          <HandlerArea options={options} setOptions={setOptions} />
+          <HandlerArea
+            options={options}
+            setOptions={setOptions}
+            systemName={systemName}
+            setSystemName={setSystemName}
+          />
           <History />
           <Clipboard useLocalStorage />
           <div className="xflow-container">
+            {!systemName && (
+              <div className="disabled-cover">
+                <LockOutlined className="lock-icon" />
+                请先选择作业所属业务系统
+              </div>
+            )}
             <DndPanel />
             <XFlowGraph
               className="xflow-graph"

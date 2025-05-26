@@ -203,19 +203,20 @@ function convertWorkflow(
 export const HandlerArea: React.FC<{
   options: { readonly: boolean };
   setOptions: (options: { readonly: boolean }) => void;
+  systemName: string;
+  setSystemName: (name: string) => void;
 }> = ({
   options,
   setOptions,
-}: {
-  options: { readonly: boolean };
-  setOptions: (options: { readonly: boolean }) => void;
+  systemName,
+  setSystemName,
 }) => {
   const { globalState, setGlobalState } = useAppContext(); // 获取全局 state
   const { hasSaved } = globalState;
   const graph = useGraphInstance();
   const { undo, redo, canUndo, canRedo } = useHistory();
   const { copy, paste } = useClipboard();
-  const [systemName, setSystemName] = useState('');
+
   const systemOptions = [
     {
       value: "conductor",
@@ -469,6 +470,8 @@ export const HandlerArea: React.FC<{
     // 画布设置只读
     // setOptions({ readonly: true })
   };
+
+  const isHide = false
   return (
     <div className="xflow-header">
       <Space>
@@ -495,32 +498,35 @@ export const HandlerArea: React.FC<{
             ></Button>
           )}
         </Input.Group>
-
-        <Button onClick={undo} disabled={!canUndo} icon={<UndoOutlined />}>
-          撤销操作
-        </Button>
-        <Button onClick={redo} disabled={!canRedo} icon={<RedoOutlined />}>
-          还原操作
-        </Button>
-        {!options.readonly && (
+        {isHide && (
           <>
-            <Button
-              onClick={onCopy}
-              disabled={!nodes.some((n) => n.selected)}
-              icon={<CopyOutlined />}
-              type="primary"
-              ghost
-            >
-              复制节点
-            </Button>
-            <Button
-              onClick={onPaste}
-              icon={<CopyOutlined />}
-              type="primary"
-              ghost
-            >
-              粘贴节点
-            </Button>
+          <Button onClick={undo} disabled={!canUndo} icon={<UndoOutlined />}>
+            撤销操作
+          </Button>
+          <Button onClick={redo} disabled={!canRedo} icon={<RedoOutlined />}>
+            还原操作
+          </Button>
+          {!options.readonly && (
+            <>
+              <Button
+                onClick={onCopy}
+                disabled={!nodes.some((n) => n.selected)}
+                icon={<CopyOutlined />}
+                type="primary"
+                ghost
+              >
+                复制节点
+              </Button>
+              <Button
+                onClick={onPaste}
+                icon={<CopyOutlined />}
+                type="primary"
+                ghost
+              >
+                粘贴节点
+              </Button>
+            </>
+          )}
           </>
         )}
         {options.readonly ? (
