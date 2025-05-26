@@ -129,7 +129,7 @@ Graph.registerNodeTool('outputPortsPlusBtn', {
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
     const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
-    if (outputPorts.length < 50) {
+    if (outputPorts.length < 10) {
       cell.addPort({
         id: `output${outputPorts.length + 1}`,
         group: 'output',
@@ -219,7 +219,7 @@ Graph.registerNodeTool('inputPortsPlusBtn', {
   onClick({ cell }) {
     const ports = cell.getPorts()
     const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
-    if (inputPorts.length < 50) {
+    if (inputPorts.length < 10) {
       cell.addPort({
         id: `input${inputPorts.length + 1}`,
         group: 'input',

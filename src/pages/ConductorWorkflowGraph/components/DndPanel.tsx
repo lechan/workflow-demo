@@ -104,7 +104,7 @@ const DndPanel: React.FC<DndPanelProps> = () => {
           ports: {
             ...defaultPorts,
           },
-          draggable: hasSaved,
+          // draggable: hasSaved,
           tools: [
             {
               name: 'button-remove',
@@ -144,7 +144,7 @@ const DndPanel: React.FC<DndPanelProps> = () => {
           label: node.label,
           ...functionNode[node.id as keyof typeof functionNode],
           nodeType: node.id,
-          draggable: hasSaved,
+          // draggable: hasSaved,
           ports: {
             ...functionPort[node.id as keyof typeof functionNode],
           }
