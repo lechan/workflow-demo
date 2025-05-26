@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useHistory,
   useClipboard,
@@ -227,7 +227,15 @@ export const HandlerArea: React.FC<{
       label: "Airflow",
     },
   ];
+
+  // 从本地存储里提取数据
+  const getStorageData = JSON.parse(localStorage.getItem('graphData') || 'null')
+  useEffect(() => {
+    setSystemName(getStorageData.systemName);
+  }, []);
   const [workflowName, setWorkflowName] = useState(
+    getStorageData && getStorageData.workflowName ? 
+    getStorageData.workflowName :
     `新建作业${dayjs().format("YYYYMMDDHHmmss")}`
   );
   const [isEditName, setIsEditName] = useState(false);
@@ -338,6 +346,10 @@ export const HandlerArea: React.FC<{
     }
 
     const graphData = graph?.toJSON();
+    // @ts-ignore
+    graphData['systemName'] = systemName;
+    // @ts-ignore
+    graphData['workflowName'] = workflowName;
     localStorage.setItem("graphData", JSON.stringify(graphData));
     console.log(graphData);
     const workflowData = convertWorkflow(
@@ -476,6 +488,7 @@ export const HandlerArea: React.FC<{
     <div className="xflow-header">
       <Space>
         <Select
+          value={systemName}
           placeholder="请选择业务系统"
           style={{ width: 150 }}
           options={systemOptions}
