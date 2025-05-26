@@ -26,6 +26,7 @@ Graph.registerEdgeTool('edge-remove', {
     },
   ],
   distance: '50%',
+  // @ts-ignore
   onClick({ cell }) {
     cell.remove()
   },
@@ -45,13 +46,4 @@ export const defaultEdges = {
       },
     },
   },
-  tools: [
-    {
-      name: 'edge-remove',
-      args: {
-        distance: 0.5,
-      },
-      visible: 'selected',
-    },
-  ],
 }

@@ -12,7 +12,10 @@ interface AppContextType {
   setGlobalState: React.Dispatch<React.SetStateAction<AppState>>;
 }
 
-const defaultState: AppState = { hasSaved: false };
+const defaultState: AppState = {
+  // 是否保存
+  hasSaved: false
+};
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

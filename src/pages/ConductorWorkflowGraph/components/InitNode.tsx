@@ -25,6 +25,20 @@ export const InitNode = () => {
     })
   }, [initData])
 
+  // 处理边的选中／取消选中，动态添加或移除删除按钮
+  graph?.on('edge:selected', ({ cell }) => {
+    cell.addTools([{
+      name: 'edge-remove',
+      args: { distance: '50%' },  // 或 0.5
+    }])
+  })
+
+  graph?.on('edge:unselected', ({ cell }) => {
+    if (cell.hasTool('edge-remove')) {
+      cell.removeTool('edge-remove')
+    }
+  })
+
   useEffect(() => {
     if (getStorageData !== null) {
       graph?.fromJSON(getStorageData)
