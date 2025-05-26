@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState } from "react";
 import {
   useHistory,
@@ -20,6 +21,7 @@ import type { Workflow, Task, WorkflowRawData, Node, Edge } from "./types";
 import { startNodes } from "./nodes";
 import { startPorts } from "./ports";
 import dayjs from "dayjs";
+import { useAppContext } from './AppContext';
 
 function convertWorkflow(
   workflowRawData: WorkflowRawData,
@@ -208,6 +210,8 @@ export const HandlerArea: React.FC<{
   options: { readonly: boolean };
   setOptions: (options: { readonly: boolean }) => void;
 }) => {
+  const { globalState, setGlobalState } = useAppContext(); // 获取全局 state
+  const { hasSaved } = globalState;
   const graph = useGraphInstance();
   const { undo, redo, canUndo, canRedo } = useHistory();
   const { copy, paste } = useClipboard();
@@ -250,8 +254,7 @@ export const HandlerArea: React.FC<{
   const editWorkflowName = () => {
     setIsEditName(true);
   };
-
-  const [hasSaved, setHasSaved] = useState(false);
+  
   const nodes = useGraphStore((state) => state.nodes);
   const setInitData = useGraphStore((state) => state.initData);
   const onCopy = () => {
@@ -272,6 +275,7 @@ export const HandlerArea: React.FC<{
     nodes.forEach(node => {
       const ports = node.getPorts();
       ports.forEach(port => {
+        // @ts-ignore
         const connectedEdges = graph.getConnectedEdges(node, { portId: port.id });
         if (connectedEdges.length === 0) {
           unconnectedPorts = true;
@@ -284,19 +288,21 @@ export const HandlerArea: React.FC<{
     }
 
     // 2. 检查是否有end节点
+    // @ts-ignore
     const hasEndNode = nodes.some(node => node.store?.data?.nodeType === 'end');
     if (!hasEndNode) {
       return { isValid: false, error: '工作流缺少结束节点' };
     }
 
     // 3. 检查是否有至少一个程序节点
-    const programNodes = ['shell', 'python', 'promql'];
+    const programNodes = ['Shell', 'Python', 'PromQL', 'LocalFile', 'RemoteFile'];
     const hasProgramNode = nodes.some(node => {
-      const nodeType = node.store?.data?.nodeType?.toLowerCase()
+      // @ts-ignore
+      const nodeType = node.store?.data?.nodeType
       return programNodes.includes(nodeType);
     });
     if (!hasProgramNode) {
-      return { isValid: false, error: '工作流至少需要一个程序节点（shell、python或promql）' };
+      return { isValid: false, error: '工作流至少需要一个程序节点' };
     }
 
     return { isValid: true };
@@ -315,7 +321,7 @@ export const HandlerArea: React.FC<{
       return;
     }
 
-    setHasSaved(true);
+    setGlobalState(prev => ({ ...prev, hasSaved: true })); // 更新全局 hasSaved
     // 重置所有节点和边的状态样式
     if (graph) {
       // graph.getNodes().forEach((node) => {
@@ -347,7 +353,7 @@ export const HandlerArea: React.FC<{
   const edit = () => {
     console.log("编辑");
     setOptions({ readonly: false });
-    setHasSaved(false);
+    setGlobalState(prev => ({ ...prev, hasSaved: false })); // 更新全局 hasSaved
   };
   const reset = () => {
     console.log("重置");
@@ -369,7 +375,7 @@ export const HandlerArea: React.FC<{
     });
     // 清空history
     graph?.cleanHistory();
-    setHasSaved(false);
+    setGlobalState(prev => ({ ...prev, hasSaved: false })); // 更新全局 hasSaved
   };
   const initMockNodeStatus = () => {
     const nodes = graph?.getNodes();
@@ -396,7 +402,7 @@ export const HandlerArea: React.FC<{
   };
   const run = () => {
     console.log("执行");
-    setHasSaved(true);
+    setGlobalState(prev => ({ ...prev, hasSaved: true })); // 更新全局 hasSaved
     const mockNodeStatus = initMockNodeStatus();
     const statusColor = {
       success: "#95de64",

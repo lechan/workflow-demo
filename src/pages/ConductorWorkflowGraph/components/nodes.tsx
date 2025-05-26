@@ -125,6 +125,7 @@ Graph.registerNodeTool('outputPortsPlusBtn', {
   x: '100%',
   y: '33%',
   offset: { x: -20, y: -10 },
+  // @ts-ignore
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
     const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
@@ -170,6 +171,7 @@ Graph.registerNodeTool('outputPortsMinusBtn', {
   x: '100%',
   y: '66%',
   offset: { x: -20, y: 10 },
+  // @ts-ignore
   onClick({ cell }) {
     const ports = cell.getPorts()
     const outputPorts = ports.filter((port: { group: string }) => port.group === 'output')
@@ -213,6 +215,7 @@ Graph.registerNodeTool('inputPortsPlusBtn', {
   x: '0%',
   y: '33%',
   offset: { x: 20, y: -10 },
+  // @ts-ignore
   onClick({ cell }) {
     const ports = cell.getPorts()
     const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')
@@ -258,6 +261,7 @@ Graph.registerNodeTool('inputPortsMinusBtn', {
   x: '0%',
   y: '66%',
   offset: { x: 20, y: 10 },
+  // @ts-ignore
   onClick: ({ cell }) => {
     const ports = cell.getPorts()
     const inputPorts = ports.filter((port: { group: string }) => port.group === 'input')

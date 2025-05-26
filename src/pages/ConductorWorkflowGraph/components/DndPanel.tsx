@@ -1,4 +1,5 @@
 import { useDnd } from '@antv/xflow'
+import { useAppContext } from './AppContext'
 import './index.less'
 import React from 'react'
 import { Space } from 'antd'
@@ -13,7 +14,13 @@ interface NodeType {
   background: string
 }
 
-const DndPanel: React.FC = () => {
+interface DndPanelProps {
+  hasSaved?: boolean;
+}
+
+const DndPanel: React.FC<DndPanelProps> = () => {
+  const { globalState } = useAppContext(); // 获取全局 state
+  const { hasSaved } = globalState;
   const { startDrag } = useDnd()
   const nodeTypes: NodeType[] = [
     {
@@ -72,44 +79,46 @@ const DndPanel: React.FC = () => {
     e: React.MouseEvent<Element, MouseEvent>,
     node: NodeType,
   ) => {
-    console.log(node.id)
-    startDrag(
-      {
-        id: uuidv4(),
-        label: node.label,
-        nodeType: node.id,
-        ...defaultNodes,
-        attrs: {
-          ...defaultNodes.attrs,
-          label: {
-            ...defaultNodes.attrs.label,
-            text: node.icon + node.label,
-          },
-          header: {
-            ...defaultNodes.attrs.header,
-            fill: node.background,
-          },
-          nodeName: {
-            ...defaultNodes.attrs.nodeName,
-            text: '未命名'
-          }
-        },
-        ports: {
-          ...defaultPorts,
-        },
-        tools: [
-          {
-            name: 'button-remove',
-            args: {
-              x: '100%',
-              y: 0,
-              offset: { x: 0, y: 0 },
+    if (!hasSaved) {
+      startDrag(
+        {
+          id: uuidv4(),
+          label: node.label,
+          nodeType: node.id,
+          ...defaultNodes,
+          attrs: {
+            ...defaultNodes.attrs,
+            label: {
+              ...defaultNodes.attrs.label,
+              text: node.icon + node.label,
             },
+            header: {
+              ...defaultNodes.attrs.header,
+              fill: node.background,
+            },
+            nodeName: {
+              ...defaultNodes.attrs.nodeName,
+              text: '未命名'
+            }
           },
-        ],
-      },
-      e,
-    )
+          ports: {
+            ...defaultPorts,
+          },
+          draggable: hasSaved,
+          tools: [
+            {
+              name: 'button-remove',
+              args: {
+                x: '100%',
+                y: 0,
+                offset: { x: 0, y: 0 },
+              },
+            },
+          ],
+        },
+        e,
+      )
+    }
   }
 
   const functionNode = {
@@ -128,18 +137,21 @@ const DndPanel: React.FC = () => {
     e: React.MouseEvent<Element, MouseEvent>,
     node: NodeType,
   ) => {
-    startDrag(
-      {
-        id: node.id === 'end' ? 'end' : uuidv4(),
-        label: node.label,
-        ...functionNode[node.id as keyof typeof functionNode],
-        nodeType: node.id,
-        ports: {
-          ...functionPort[node.id as keyof typeof functionNode],
-        }
-      },
-      e,
-    )
+    if (!hasSaved) {
+      startDrag(
+        {
+          id: node.id === 'end' ? 'end' : uuidv4(),
+          label: node.label,
+          ...functionNode[node.id as keyof typeof functionNode],
+          nodeType: node.id,
+          draggable: hasSaved,
+          ports: {
+            ...functionPort[node.id as keyof typeof functionNode],
+          }
+        },
+        e,
+      )
+    }
   }
 
   return (
@@ -149,7 +161,7 @@ const DndPanel: React.FC = () => {
         {nodeTypes.map((node) => (
           <div
             key={node.id}
-            className="dnd-item"
+            className={hasSaved ? 'dnd-item disabled' : 'dnd-item'}
             style={{ background: node.background }}
             onMouseDown={(e) => handleMouseDown(e, node)}
           >
@@ -162,7 +174,7 @@ const DndPanel: React.FC = () => {
         {functionNodeTypes.map((node) => (
           <div
             key={node.id}
-            className="dnd-item"
+            className={hasSaved ? 'dnd-item disabled' : 'dnd-item'}
             style={{ background: node.background }}
             onMouseDown={(e) => handleSelectFunctionNode(e, node)}
           >
