@@ -4,7 +4,10 @@ import type { ReactNode } from 'react';
 // 定义全局状态类型，可拓展其他字段
 interface AppState {
   hasSaved: boolean;
-  // future global vars
+  currentNodeDetail?: {
+    nodeId: string;
+    [key: string]: any;
+  };
 }
 
 interface AppContextType {
@@ -14,7 +17,8 @@ interface AppContextType {
 
 const defaultState: AppState = {
   // 是否保存
-  hasSaved: false
+  hasSaved: false,
+  currentNodeDetail: undefined
 };
 const AppContext = createContext<AppContextType | undefined>(undefined);
 

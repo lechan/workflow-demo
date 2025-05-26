@@ -1,5 +1,10 @@
 import React from 'react';
-import { Drawer, Form, Input, Select } from 'antd';
+import { Drawer, Form, Input } from 'antd';
+import ShellForm from './NodeForm/Shell';
+import PythonForm from './NodeForm/Python';
+import PromQLForm from './NodeForm/PromQL';
+import LocalFileForm from './NodeForm/LocalFile';
+import RemoteFileForm from './NodeForm/RemoteFile';
 
 interface NodeDrawerProps {
   visible: boolean;
@@ -16,50 +21,15 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
     const { store: { data: { nodeType } } } = nodeData
     switch (nodeType) {
       case 'Shell':
-        return (
-          <>
-            <Form.Item name="command" label="Shell命令" rules={[{ required: true }]}>
-              <Input.TextArea rows={4} placeholder="请输入shell命令" />
-            </Form.Item>
-          </>
-        );
+        return <ShellForm form={form} nodeData={nodeData} onClose={onClose} />;
       case 'Python':
-        return (
-          <>
-            <Form.Item name="script" label="Python脚本" rules={[{ required: true }]}>
-              <Input.TextArea rows={4} placeholder="请输入Python脚本" />
-            </Form.Item>
-            <Form.Item name="requirements" label="依赖包">
-              <Input.TextArea rows={2} placeholder="每行一个依赖包" />
-            </Form.Item>
-          </>
-        );
+        return <PythonForm form={form} nodeData={nodeData} onClose={onClose} />;
       case 'PromQL':
-        return (
-          <>
-            <Form.Item name="query" label="PromQL查询" rules={[{ required: true }]}>
-              <Input.TextArea rows={4} placeholder="请输入PromQL查询语句" />
-            </Form.Item>
-            <Form.Item name="datasource" label="数据源">
-              <Select placeholder="请选择数据源">
-                <Select.Option value="prometheus">Prometheus</Select.Option>
-                <Select.Option value="thanos">Thanos</Select.Option>
-              </Select>
-            </Form.Item>
-          </>
-        );
-        case 'LocalFile':
-          return (
-            <>
-              本地文件
-            </>
-          );
-          case 'RemoteFile':
-            return (
-              <>
-                远程抓取
-              </>
-            );
+        return <PromQLForm form={form} nodeData={nodeData} onClose={onClose} />;
+      case 'LocalFile':
+        return <LocalFileForm form={form} nodeData={nodeData} onClose={onClose} />;
+      case 'RemoteFile':
+        return <RemoteFileForm form={form} nodeData={nodeData} onClose={onClose} />;
       default:
         return null;
     }
