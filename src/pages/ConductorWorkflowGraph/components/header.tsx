@@ -16,7 +16,15 @@ import {
   SaveOutlined,
   UndoOutlined,
   ExclamationCircleFilled,
+  GlobalOutlined,
+  SettingOutlined,
+  HistoryOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
+import { GlobalVariables } from "./ConfigForm/GlobalVariables";
+import { BasicConfig } from "./ConfigForm/BasicConfig";
+import { OperationLog } from "./ConfigForm/OperationLog";
+import { ExecutionPolicy } from "./ConfigForm/ExecutionPolicy";
 import type { Workflow, Task, WorkflowRawData, Node, Edge } from "./types";
 import { startNodes } from "./nodes";
 import { startPorts } from "./ports";
@@ -231,7 +239,7 @@ export const HandlerArea: React.FC<{
   // 从本地存储里提取数据
   const getStorageData = JSON.parse(localStorage.getItem('graphData') || 'null')
   useEffect(() => {
-    setSystemName(getStorageData.systemName);
+    setSystemName(getStorageData?.systemName);
   }, []);
   const [workflowName, setWorkflowName] = useState(
     getStorageData && getStorageData.workflowName ? 
@@ -245,7 +253,8 @@ export const HandlerArea: React.FC<{
     } else {
       const { confirm } = Modal
       confirm({
-        title: '该操作会重置画布内容，请确认?',
+        title: '操作确认',
+        content: '该操作会重置画布内容，请确认?',
         icon: <ExclamationCircleFilled />,
         onOk() {
           setSystemName(value)
@@ -484,6 +493,12 @@ export const HandlerArea: React.FC<{
   };
 
   const isHide = false
+  
+  const [globalVarsVisible, setGlobalVarsVisible] = useState(false);
+  const [basicConfigVisible, setBasicConfigVisible] = useState(false);
+  const [operationLogVisible, setOperationLogVisible] = useState(false);
+  const [executionPolicyVisible, setExecutionPolicyVisible] = useState(false);
+
   return (
     <div className="xflow-header">
       <Space>
@@ -511,6 +526,43 @@ export const HandlerArea: React.FC<{
             ></Button>
           )}
         </Input.Group>
+        <Button 
+          icon={<GlobalOutlined />} 
+          type="default"
+          onClick={() => setGlobalVarsVisible(true)}
+        >全局变量</Button>
+        <Button 
+          icon={<SettingOutlined />} 
+          type="default"
+          onClick={() => setBasicConfigVisible(true)}
+        >基础配置</Button>
+        <Button 
+          icon={<HistoryOutlined />} 
+          type="default"
+          onClick={() => setOperationLogVisible(true)}
+        >操作日志</Button>
+        <Button 
+          icon={<ScheduleOutlined />} 
+          type="default"
+          onClick={() => setExecutionPolicyVisible(true)}
+        >执行策略</Button>
+        
+        <GlobalVariables 
+          visible={globalVarsVisible} 
+          onClose={() => setGlobalVarsVisible(false)} 
+        />
+        <BasicConfig 
+          visible={basicConfigVisible} 
+          onClose={() => setBasicConfigVisible(false)} 
+        />
+        <OperationLog 
+          visible={operationLogVisible} 
+          onClose={() => setOperationLogVisible(false)} 
+        />
+        <ExecutionPolicy 
+          visible={executionPolicyVisible} 
+          onClose={() => setExecutionPolicyVisible(false)} 
+        />
         {isHide && (
           <>
           <Button onClick={undo} disabled={!canUndo} icon={<UndoOutlined />}>
