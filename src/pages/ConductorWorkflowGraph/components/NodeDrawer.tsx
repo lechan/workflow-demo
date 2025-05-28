@@ -41,7 +41,7 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
       placement="right"
       width={600}
       onClose={onClose}
-      open={visible}
+      visible={visible}
     >
       <Form
         form={form}

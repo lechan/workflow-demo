@@ -21,10 +21,15 @@ const LocalFileForm: React.FC<LocalFileFormProps> = ({ form, nodeData, onClose }
         // 更新节点数据
         const node = graph.getCellById(nodeData.id);
         if (node) {
+          // 获取节点名称
+          const nodeName = form.getFieldValue('name');
           node.setData({
             ...node.getData(),
             ...values,
+            hasDetailSaved: true, // 添加保存状态标记
           });
+          // 更新节点显示名称
+          node.setAttrByPath('nodeName', {text: nodeName});
         }
 
         // 更新全局状态

@@ -327,6 +327,33 @@ export const HandlerArea: React.FC<{
       return { isValid: false, error: '工作流至少需要一个程序节点' };
     }
 
+    // 4. 检查所有程序节点是否都已保存详情
+    const unsavedNodes = nodes.filter(node => {
+      // @ts-ignore
+      const nodeType = node.store?.data?.nodeType;
+      // @ts-ignore
+      const hasDetailSaved = node.store?.data?.data?.hasDetailSaved;
+      return programNodes.includes(nodeType) && !hasDetailSaved;
+    });
+
+    // 重置所有节点的边框样式
+    nodes.forEach(node => {
+      // @ts-ignore
+      if (programNodes.includes(node.store?.data?.nodeType)) {
+        node.setAttrByPath('body/stroke', '#d9d9d9');
+        node.setAttrByPath('body/strokeWidth', 1);
+      }
+    });
+
+    if (unsavedNodes.length > 0) {
+      // 为未保存的节点添加红色边框
+      unsavedNodes.forEach(node => {
+        node.setAttrByPath('body/stroke', '#ff4d4f');
+        node.setAttrByPath('body/strokeWidth', 2);
+      });
+      return { isValid: false, error: `以下节点的详情配置尚未保存：${unsavedNodes.map(n => n.id).join(', ')}` };
+    }
+
     return { isValid: true };
   };
 
