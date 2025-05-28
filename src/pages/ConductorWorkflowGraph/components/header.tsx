@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   useHistory,
   useClipboard,
   useGraphInstance,
   useGraphStore,
-} from "@antv/xflow";
-import { Button, Space, Select, Input, Modal } from "antd";
+} from '@antv/xflow';
+import { Button, Space, Select, Input, Modal } from 'antd';
+import type { InputRef } from 'antd';
 import {
   CopyOutlined,
   DeleteOutlined,
@@ -20,15 +21,15 @@ import {
   SettingOutlined,
   HistoryOutlined,
   ScheduleOutlined,
-} from "@ant-design/icons";
-import { GlobalVariables } from "./ConfigForm/GlobalVariables";
-import { BasicConfig } from "./ConfigForm/BasicConfig";
-import { OperationLog } from "./ConfigForm/OperationLog";
-import { ExecutionPolicy } from "./ConfigForm/ExecutionPolicy";
-import type { Workflow, Task, WorkflowRawData, Node, Edge } from "./types";
-import { startNodes } from "./nodes";
-import { startPorts } from "./ports";
-import dayjs from "dayjs";
+} from '@ant-design/icons';
+import { GlobalVariables } from './ConfigForm/GlobalVariables';
+import { BasicConfig } from './ConfigForm/BasicConfig';
+import { OperationLog } from './ConfigForm/OperationLog';
+import { ExecutionPolicy } from './ConfigForm/ExecutionPolicy';
+import type { Workflow, Task, WorkflowRawData, Node, Edge } from './types';
+import { startNodes } from './nodes';
+import { startPorts } from './ports';
+import dayjs from 'dayjs';
 import { useAppContext } from './AppContext';
 
 function convertWorkflow(
@@ -37,8 +38,8 @@ function convertWorkflow(
   systemName = ''
 ): Workflow {
   const cells = workflowRawData.graphData.cells;
-  const nodes = cells.filter((c) => c.shape === "rect" && c.nodeType) as Node[];
-  const edges = cells.filter((c) => c.shape === "edge") as Edge[];
+  const nodes = cells.filter((c) => c.shape === 'rect' && c.nodeType) as Node[];
+  const edges = cells.filter((c) => c.shape === 'edge') as Edge[];
 
   // 构造子节点映射（source -> [target]）和父节点映射（target -> [source]）
   const childrenMap: Record<string, string[]> = {};
@@ -58,7 +59,7 @@ function convertWorkflow(
     nodeMap[n.id] = n;
   });
 
-  // 找到起始节点：优先找 "start" 的直接子节点，否则找无父节点的节点
+  // 找到起始节点：优先找 'start' 的直接子节点，否则找无父节点的节点
   let startId: string | undefined;
   if (childrenMap['start'] && childrenMap['start'].length > 0) {
     startId = childrenMap['start'][0];
@@ -227,12 +228,12 @@ export const HandlerArea: React.FC<{
 
   const systemOptions = [
     {
-      value: "conductor",
-      label: "Conductor",
+      value: 'conductor',
+      label: 'Conductor',
     },
     {
-      value: "airflow",
-      label: "Airflow",
+      value: 'airflow',
+      label: 'Airflow',
     },
   ];
 
@@ -244,11 +245,13 @@ export const HandlerArea: React.FC<{
   const [workflowName, setWorkflowName] = useState(
     getStorageData && getStorageData.workflowName ? 
     getStorageData.workflowName :
-    `新建作业${dayjs().format("YYYYMMDDHHmmss")}`
+    `新建作业${dayjs().format('YYYYMMDDHHmmss')}`
   );
   const [isEditName, setIsEditName] = useState(false);
+  const workflowInputRef = useRef<InputRef>(null);
   const handleChangeSystem = (value: string) => {
-    if (systemName === '') {
+    console.log(systemName)
+    if (!systemName || systemName === '') {
       setSystemName(value)
     } else {
       const { confirm } = Modal
@@ -271,13 +274,14 @@ export const HandlerArea: React.FC<{
   };
   const editWorkflowName = () => {
     setIsEditName(true);
+    workflowInputRef.current?.focus({ cursor: 'end'});
   };
   
   const nodes = useGraphStore((state) => state.nodes);
   const setInitData = useGraphStore((state) => state.initData);
   const onCopy = () => {
     const selected = nodes.filter((node) => node.selected);
-    const ids: string[] = selected.map((node) => node.id || "");
+    const ids: string[] = selected.map((node) => node.id || '');
     copy(ids);
   };
 
@@ -327,7 +331,7 @@ export const HandlerArea: React.FC<{
   };
 
   const save = () => {
-    console.log("保存");
+    console.log('保存');
     
     // 验证工作流
     const validation = validateWorkflow();
@@ -343,14 +347,14 @@ export const HandlerArea: React.FC<{
     // 重置所有节点和边的状态样式
     if (graph) {
       // graph.getNodes().forEach((node) => {
-      //   node.setAttrByPath("header/fill", "#f5f5f5");
-      //   node.setAttrByPath("statusIndicator/fill", "#f5f5f5");
+      //   node.setAttrByPath('header/fill', '#f5f5f5');
+      //   node.setAttrByPath('statusIndicator/fill', '#f5f5f5');
       // });
 
       graph.getEdges().forEach((edge) => {
-        edge.setAttrByPath("line/stroke", "#A2B1C3");
-        edge.setAttrByPath("line/strokeWidth", 1);
-        edge.setAttrByPath("line/strokeDasharray", null);
+        edge.setAttrByPath('line/stroke', '#A2B1C3');
+        edge.setAttrByPath('line/strokeWidth', 1);
+        edge.setAttrByPath('line/strokeDasharray', null);
       });
     }
 
@@ -359,7 +363,7 @@ export const HandlerArea: React.FC<{
     graphData['systemName'] = systemName;
     // @ts-ignore
     graphData['workflowName'] = workflowName;
-    localStorage.setItem("graphData", JSON.stringify(graphData));
+    localStorage.setItem('graphData', JSON.stringify(graphData));
     console.log(graphData);
     const workflowData = convertWorkflow(
       { graphData: graphData } as WorkflowRawData,
@@ -373,18 +377,18 @@ export const HandlerArea: React.FC<{
     paste({ offset: 50 });
   };
   const edit = () => {
-    console.log("编辑");
+    console.log('编辑');
     setOptions({ readonly: false });
     setGlobalState(prev => ({ ...prev, hasSaved: false })); // 更新全局 hasSaved
   };
   const reset = () => {
-    console.log("重置");
-    localStorage.removeItem("graphData");
+    console.log('重置');
+    localStorage.removeItem('graphData');
     setInitData({
       nodes: [
         {
-          id: "start",
-          label: "开始",
+          id: 'start',
+          label: '开始',
           x: 100,
           y: 50,
           ...startNodes,
@@ -405,16 +409,16 @@ export const HandlerArea: React.FC<{
       console.log(nodes);
       return nodes.map((node, index) => {
         if (node.id === 'start') {
-          return { id: 'start', status: "success" };
+          return { id: 'start', status: 'success' };
         } else if (node.id === 'end') {
-          return { id: 'end', status: "running" };
+          return { id: 'end', status: 'running' };
         } else {
           if (index < nodes.length - 3) {
-            return { id: node.id, status: "success" };
+            return { id: node.id, status: 'success' };
           } else if (index === nodes.length - 2) {
-            return { id: node.id, status: "running" };
+            return { id: node.id, status: 'running' };
           } else {
-            return { id: node.id, status: "success" };
+            return { id: node.id, status: 'success' };
           }
         }
       })
@@ -423,20 +427,20 @@ export const HandlerArea: React.FC<{
     }
   };
   const run = () => {
-    console.log("执行");
+    console.log('执行');
     setGlobalState(prev => ({ ...prev, hasSaved: true })); // 更新全局 hasSaved
     const mockNodeStatus = initMockNodeStatus();
     const statusColor = {
-      success: "#95de64",
-      failure: "#ff7875",
-      running: "#69c0ff",
+      success: '#95de64',
+      failure: '#ff7875',
+      running: '#69c0ff',
     };
     const graphAddStatus = () => {
       if (!graph) return;
 
       // 首先清除所有边的动画样式
       graph.getEdges().forEach((edge) => {
-        edge.setAttrByPath("line/stroke", "#A2B1C3");
+        edge.setAttrByPath('line/stroke', '#A2B1C3');
       });
 
       mockNodeStatus.forEach(({ id, status }) => {
@@ -448,38 +452,38 @@ export const HandlerArea: React.FC<{
           });
 
           node.setAttrByPath(
-            "header/fill",
-            statusColor[status as keyof typeof statusColor] || "#f5f5f5"
+            'header/fill',
+            statusColor[status as keyof typeof statusColor] || '#f5f5f5'
           );
           node.setAttrByPath(
-            "statusIndicator/fill",
-            statusColor[status as keyof typeof statusColor] || "#f5f5f5"
+            'statusIndicator/fill',
+            statusColor[status as keyof typeof statusColor] || '#f5f5f5'
           );
 
           // 如果是running状态的节点，处理其前置边
-          if (status === "success") {
+          if (status === 'success') {
             const incomingEdges = graph.getIncomingEdges(node);
             incomingEdges?.forEach((edge) => {
-              edge.setAttrByPath("line/stroke", statusColor["success"]);
-              edge.setAttrByPath("line/strokeWidth", 2);
+              edge.setAttrByPath('line/stroke', statusColor['success']);
+              edge.setAttrByPath('line/strokeWidth', 2);
             });
-          } else if (status === "failure") {
+          } else if (status === 'failure') {
             const incomingEdges = graph.getIncomingEdges(node);
             const outgoingEdges = graph.getOutgoingEdges(node);
             incomingEdges?.forEach((edge) => {
-              edge.setAttrByPath("line/stroke", statusColor["failure"]);
-              edge.setAttrByPath("line/strokeWidth", 2);
+              edge.setAttrByPath('line/stroke', statusColor['failure']);
+              edge.setAttrByPath('line/strokeWidth', 2);
             });
             outgoingEdges?.forEach((edge) => {
-              edge.setAttrByPath("line/stroke", statusColor["failure"]);
-              edge.setAttrByPath("line/strokeWidth", 2);
+              edge.setAttrByPath('line/stroke', statusColor['failure']);
+              edge.setAttrByPath('line/strokeWidth', 2);
             });
-          } else if (status === "running") {
+          } else if (status === 'running') {
             const incomingEdges = graph.getIncomingEdges(node);
             incomingEdges?.forEach((edge) => {
-              edge.setAttrByPath("line/stroke", statusColor["running"]);
-              edge.setAttrByPath("line/strokeWidth", 2);
-              edge.setAttrByPath("line/strokeDasharray", "5,5");
+              edge.setAttrByPath('line/stroke', statusColor['running']);
+              edge.setAttrByPath('line/strokeWidth', 2);
+              edge.setAttrByPath('line/strokeDasharray', '5,5');
             });
           }
         }
@@ -511,7 +515,7 @@ export const HandlerArea: React.FC<{
           onChange={handleChangeSystem}
         ></Select>
         <Input.Group compact style={{ display: "flex" }}>
-          <Input readOnly={!isEditName} style={{ width: 200 }} value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
+          <Input ref={workflowInputRef} readOnly={!isEditName} style={{ width: 200 }} value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
           {isEditName ? (
             <Button
               onClick={saveWorkflowName}

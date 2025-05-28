@@ -157,7 +157,7 @@ const DndPanel: React.FC<DndPanelProps> = () => {
   return (
     <div className="workflow-dnd-panel">
       <h3>程序节点</h3>
-      <Space direction="vertical">
+      <Space direction="vertical" style={{ marginBottom: '20px' }}>
         {nodeTypes.map((node) => (
           <div
             key={node.id}
