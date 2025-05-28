@@ -18,6 +18,7 @@ export interface Node {
   nodeType?: string;
   shape: 'rect' | 'edge';
   attrs?: { text?: { text?: string } };
+  data: object;
 }
 
 export interface Edge {
@@ -41,6 +42,7 @@ export interface Task {
   type: 'SIMPLE' | 'FORK' | 'JOIN';
   forkTasks?: Task[][];
   joinOn?: string[];
+  nodeData?: string | null;  // 节点数据，可能为字符串或null
 }
 
 export interface Workflow {

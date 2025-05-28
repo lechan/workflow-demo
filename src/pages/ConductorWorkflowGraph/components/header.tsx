@@ -100,6 +100,7 @@ function convertWorkflow(
         name: node.nodeType,
         taskReferenceName: node.id,
         type: node.nodeType.toUpperCase() as Task['type'],
+        nodeData: JSON.stringify(node.data),
       });
       branchEndRef = node.id;
       const nextIds = childrenMap[currentId] || [];
@@ -191,6 +192,7 @@ function convertWorkflow(
       name: node.nodeType,
       taskReferenceName: node.id,
       type: node.nodeType.toUpperCase() as Task['type'],
+      nodeData: JSON.stringify(node.data),
     });
     const nextIds = childrenMap[currentId] || [];
     if (nextIds.length === 1) {
