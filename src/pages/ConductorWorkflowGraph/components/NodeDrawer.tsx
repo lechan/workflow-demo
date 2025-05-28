@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Form, Input } from 'antd';
+import { Drawer, Form } from 'antd';
 import ShellForm from './NodeForm/Shell';
 import PythonForm from './NodeForm/Python';
 import PromQLForm from './NodeForm/PromQL';
@@ -48,9 +48,6 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
         layout="vertical"
         initialValues={nodeData}
       >
-        <Form.Item name="name" label="节点名称" rules={[{ required: true }]}>
-          <Input placeholder="请输入节点名称" />
-        </Form.Item>
         {renderFormByNodeType()}
       </Form>
     </Drawer>

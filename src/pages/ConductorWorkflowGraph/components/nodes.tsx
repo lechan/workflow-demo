@@ -48,15 +48,9 @@ export const defaultNodes = {
     nodeName: {
       fontSize: 12,
       fill: '#666',
-      refX: '20',
-      refY: 50,
-      style: {
-        display: 'block',
-        width: '80%',
-        whiteSpace: 'normal',
-        wordWrap: 'break-word',
-        textOverflow: 'ellipsis',
-      },
+      rx: 6,
+      ry: 60,
+      refY: 56,
     },
   },
 }

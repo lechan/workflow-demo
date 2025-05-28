@@ -12,7 +12,6 @@ export const NodeClick: React.FC = () => {
 
   const handleNodeClick = (node: any) => {
     setSelectedNode(node);
-    console.log('Node clicked:', node);
     const { store: { data: { nodeType } } } = node
     if (nodeType && (nodeType !== 'fork' && nodeType!== 'join' && nodeType!== 'end')) {
       setDrawerVisible(true);
