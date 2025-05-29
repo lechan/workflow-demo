@@ -6,10 +6,10 @@ import { defaultEdges } from "./components/edges";
 import { HandlerArea } from './components/header'
 import { DndPanel } from './components/DndPanel';
 import { AppProvider } from './components/AppContext';
-import "./components/index.less";
 import { NodeClick } from "./components/NodeClick";
 import { KeyboardBehavior } from "./components/KeyboardBehavior";
 import type { Cell } from '@antv/x6';
+import "./components/index.less";
 
 const ConductorWorkflowGraph: React.FC = () => {
   const [options, setOptions] = useState({

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Drawer, Form } from 'antd';
+import { useAppContext } from './AppContext';
 import ShellForm from './NodeForm/Shell';
 import PythonForm from './NodeForm/Python';
 import PromQLForm from './NodeForm/PromQL';
@@ -35,6 +36,8 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
     }
   };
 
+  const { globalState } = useAppContext();
+
   return (
     <Drawer
       title="节点属性配置"
@@ -47,6 +50,7 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
         form={form}
         layout="vertical"
         initialValues={nodeData}
+        disabled={globalState.hasSaved}
       >
         {renderFormByNodeType()}
       </Form>
