@@ -294,21 +294,41 @@ export const HandlerArea: React.FC<{
     // const edges = graph.getEdges();
 
     // 1. 检查所有端口是否都有连接
-    let unconnectedPorts = false;
-    let unconnectedPortNodeId = '';
-    nodes.forEach(node => {
-      const ports = node.getPorts();
-      ports.forEach(port => {
-        // @ts-ignore
-        const connectedEdges = graph.getConnectedEdges(node, { portId: port.id });
-        if (connectedEdges.length === 0) {
-          unconnectedPorts = true;
-          unconnectedPortNodeId = node.id;
+    const allEdges = graph.getEdges(); // 拿到全量边
+    let badNodeId = '';
+    let badNodeName = '';
+
+    // 如果有任何节点的某个端口没连线，直接返回 false
+    const hasUnconnected = nodes.some(node => {
+      // node.getPorts() 会拿到每个 item，如 { id: 'output1', group: 'output', ... }
+      return node.getPorts().some(port => {
+        const { id: portId, group } = port;
+        // 只关心 input/output 两个分组
+        if (group === 'input' || group === 'output') {
+          // 看这条边列表里，是否至少有一条边源/目标定位到本 node 且 port === portId
+          const isConnected = allEdges.some(edge => {
+            const src = edge.getSource();   // { cell: string, port: string, ... }
+            const trg = edge.getTarget();
+            // @ts-ignore
+            return (src.cell === node.id && src.port === portId) || (trg.cell === node.id && trg.port === portId);
+          });
+          if (!isConnected) {
+            badNodeId = node.id;
+            // @ts-ignore
+            badNodeName = node.store?.data?.data?.name;
+            return true;
+          }
         }
+        // 如果不是 input/output 也不算“未连线”
+        return false;
       });
     });
-    if (unconnectedPorts) {
-      return { isValid: false, error: `节点 ${unconnectedPortNodeId} 存在未连接的端口` };
+
+    if (hasUnconnected) {
+      return {
+        isValid: false,
+        error: `节点 "${badNodeName || badNodeId}" 存在未连接的端口`
+      };
     }
 
     // 2. 检查是否有end节点
@@ -353,7 +373,7 @@ export const HandlerArea: React.FC<{
         node.setAttrByPath('body/stroke', '#ff4d4f');
         node.setAttrByPath('body/strokeWidth', 2);
       });
-      return { isValid: false, error: `以下节点的详情配置尚未保存：${unsavedNodes.map(n => n.id).join(', ')}` };
+      return { isValid: false, error: '画布中标红的节点详情配置尚未保存' };
     }
 
     return { isValid: true };
