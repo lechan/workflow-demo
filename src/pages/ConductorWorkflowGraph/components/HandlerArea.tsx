@@ -17,6 +17,7 @@ import {
   SaveOutlined,
   UndoOutlined,
   ExclamationCircleFilled,
+  ArrowLeftOutlined,
   GlobalOutlined,
   SettingOutlined,
   HistoryOutlined,
@@ -211,6 +212,8 @@ function convertWorkflow(
 }
 
 
+import { useNavigate } from 'react-router-dom';
+
 export const HandlerArea: React.FC<{
   options: { readonly: boolean };
   setOptions: (options: { readonly: boolean }) => void;
@@ -222,6 +225,7 @@ export const HandlerArea: React.FC<{
   systemName,
   setSystemName,
 }) => {
+  const navigate = useNavigate();
   const { globalState, setGlobalState } = useAppContext(); // 获取全局 state
   const { hasSaved } = globalState;
   const graph = useGraphInstance();
@@ -555,6 +559,7 @@ export const HandlerArea: React.FC<{
   return (
     <div className="xflow-header">
       <Space>
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)}>返回</Button>
         <Select
           value={systemName}
           placeholder="请选择业务系统"
@@ -562,6 +567,7 @@ export const HandlerArea: React.FC<{
           options={systemOptions}
           allowClear
           onChange={handleChangeSystem}
+          disabled={globalState.hasSaved}
         ></Select>
         <Input.Group compact style={{ display: "flex" }}>
           <Input ref={workflowInputRef} readOnly={!isEditName} style={{ width: 200 }} value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
@@ -570,12 +576,14 @@ export const HandlerArea: React.FC<{
               onClick={saveWorkflowName}
               icon={<SaveOutlined />}
               type="primary"
+              disabled={globalState.hasSaved}
             ></Button>
           ) : (
             <Button
               onClick={editWorkflowName}
               icon={<EditOutlined />}
               type="primary"
+              disabled={globalState.hasSaved}
             ></Button>
           )}
         </Input.Group>
@@ -665,7 +673,7 @@ export const HandlerArea: React.FC<{
           type="primary"
           disabled={!hasSaved}
         >
-          执行
+          调试
         </Button>
       </Space>
     </div>

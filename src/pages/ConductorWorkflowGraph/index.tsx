@@ -3,7 +3,7 @@ import { XFlow, XFlowGraph, Grid, Background, Snapline, History, Clipboard, Cont
 import { LockOutlined } from '@ant-design/icons';
 import { InitNode } from "./components/InitNode";
 import { defaultEdges } from "./components/edges";
-import { HandlerArea } from './components/header'
+import { HandlerArea } from './components/HandlerArea'
 import { DndPanel } from './components/DndPanel';
 import { AppProvider } from './components/AppContext';
 import { NodeClick } from "./components/NodeClick";
