@@ -32,6 +32,7 @@ import { startNodes } from './nodes';
 import { startPorts } from './ports';
 import dayjs from 'dayjs';
 import { useAppContext } from './AppContext';
+import { useHistory as useNavigate } from 'react-router-dom';
 
 function convertWorkflow(
   workflowRawData: WorkflowRawData,
@@ -210,9 +211,6 @@ function convertWorkflow(
     rawData: JSON.stringify(workflowRawData),
   };
 }
-
-
-import { useNavigate } from 'react-router-dom';
 
 export const HandlerArea: React.FC<{
   options: { readonly: boolean };
@@ -559,7 +557,7 @@ export const HandlerArea: React.FC<{
   return (
     <div className="xflow-header">
       <Space>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)}>返回</Button>
+        <Button icon={<ArrowLeftOutlined />} onClick={navigate.goBack}>返回</Button>
         <Select
           value={systemName}
           placeholder="请选择业务系统"
