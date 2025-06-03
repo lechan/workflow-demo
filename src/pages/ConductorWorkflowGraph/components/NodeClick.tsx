@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import NodeDrawer from './NodeDrawer';
+import ExecuteDrawer from './ExecuteDrawer';
 import { useGraphEvent } from '@antv/xflow';
+import { useAppContext } from './AppContext';
 
 export const NodeClick: React.FC = () => {
+  const { globalState } = useAppContext();
+  const { isExecuting } = globalState;
   useGraphEvent('node:click', ({ node }) => {
     handleNodeClick(node);
   })
@@ -14,7 +18,11 @@ export const NodeClick: React.FC = () => {
     setSelectedNode(node);
     const { store: { data: { nodeType } } } = node
     if (nodeType && (nodeType !== 'fork' && nodeType!== 'join' && nodeType!== 'end')) {
-      setDrawerVisible(true);
+      if (isExecuting) {
+        setExecuteVisible(true);
+      } else {
+        setDrawerVisible(true);
+      }
     }
   };
 
@@ -23,11 +31,23 @@ export const NodeClick: React.FC = () => {
     setSelectedNode(null);
   };
 
+  const [executeVisible, setExecuteVisible] = useState(false);
+  const handleExecuteClose = () => {
+    setExecuteVisible(false);
+  };
+
   return (
-    <NodeDrawer
-      visible={drawerVisible}
-      onClose={handleDrawerClose}
-      nodeData={selectedNode}
-    />
+    <>
+      <NodeDrawer
+        visible={drawerVisible}
+        onClose={handleDrawerClose}
+        nodeData={selectedNode}
+      />
+      <ExecuteDrawer
+        visible={executeVisible}
+        onClose={handleExecuteClose}
+        nodeData={selectedNode}
+      />
+    </>
   )
 }

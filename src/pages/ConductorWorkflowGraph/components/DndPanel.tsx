@@ -154,8 +154,21 @@ const DndPanel: React.FC<DndPanelProps> = () => {
     }
   }
 
+  const showHistoryTask = () => {
+    // 调用接口获取历史任务
+    // 然后将历史任务渲染到页面上
+  }
+
   return (
     <div className="workflow-dnd-panel">
+      <h3>导入作业</h3>
+      <Space direction="vertical" style={{ marginBottom: '20px' }}>
+        <div
+          className={hasSaved ? 'dnd-item disabled' : 'dnd-item'}
+          style={{ background: '#f0f7ff', cursor: 'pointer' }}
+          onClick={showHistoryTask}
+        >📦 作业集</div>
+      </Space>
       <h3>程序节点</h3>
       <Space direction="vertical" style={{ marginBottom: '20px' }}>
         {nodeTypes.map((node) => (

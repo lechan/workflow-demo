@@ -394,7 +394,7 @@ export const HandlerArea: React.FC<{
       return;
     }
 
-    setGlobalState(prev => ({ ...prev, hasSaved: true })); // 更新全局 hasSaved
+    setGlobalState(prev => ({ ...prev, hasSaved: true, isExecuting: false })); // 更新全局 hasSaved
     // 重置所有节点和边的状态样式
     if (graph) {
       // graph.getNodes().forEach((node) => {
@@ -430,7 +430,7 @@ export const HandlerArea: React.FC<{
   const edit = () => {
     console.log('编辑');
     setOptions({ readonly: false });
-    setGlobalState(prev => ({ ...prev, hasSaved: false })); // 更新全局 hasSaved
+    setGlobalState(prev => ({ ...prev, hasSaved: false, isExecuting: false })); // 更新全局 hasSaved
   };
   const reset = () => {
     console.log('重置');
@@ -452,7 +452,7 @@ export const HandlerArea: React.FC<{
     });
     // 清空history
     graph?.cleanHistory();
-    setGlobalState(prev => ({ ...prev, hasSaved: false })); // 更新全局 hasSaved
+    setGlobalState(prev => ({ ...prev, hasSaved: false, isExecuting: false })); // 更新全局 hasSaved
   };
   const initMockNodeStatus = () => {
     const nodes = graph?.getNodes();
@@ -479,7 +479,7 @@ export const HandlerArea: React.FC<{
   };
   const run = () => {
     console.log('执行');
-    setGlobalState(prev => ({ ...prev, hasSaved: true })); // 更新全局 hasSaved
+    setGlobalState(prev => ({ ...prev, hasSaved: true, isExecuting: true })); // 更新全局 hasSaved
     const mockNodeStatus = initMockNodeStatus();
     const statusColor = {
       success: '#95de64',
@@ -658,13 +658,15 @@ export const HandlerArea: React.FC<{
             编辑
           </Button>
         ) : (
-          <Button onClick={save} icon={<SaveOutlined />} type="primary">
-            保存
-          </Button>
+          <>
+            <Button onClick={save} icon={<SaveOutlined />} type="primary">
+              保存
+            </Button>
+            <Button onClick={reset} icon={<DeleteOutlined />} danger>
+              重置
+            </Button>
+          </>
         )}
-        <Button onClick={reset} icon={<DeleteOutlined />} danger>
-          重置
-        </Button>
         <Button
           onClick={run}
           icon={<PlayCircleOutlined />}
