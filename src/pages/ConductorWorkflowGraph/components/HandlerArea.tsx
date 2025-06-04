@@ -254,7 +254,6 @@ export const HandlerArea: React.FC<{
   const [isEditName, setIsEditName] = useState(false);
   const workflowInputRef = useRef<InputRef>(null);
   const handleChangeSystem = (value: string) => {
-    console.log(systemName)
     if (!systemName || systemName === '') {
       setSystemName(value)
     } else {
@@ -266,9 +265,6 @@ export const HandlerArea: React.FC<{
         onOk() {
           setSystemName(value)
           reset()
-        },
-        onCancel() {
-          console.log('Cancel')
         },
       })
     }
@@ -415,7 +411,6 @@ export const HandlerArea: React.FC<{
     // @ts-ignore
     graphData['workflowName'] = workflowName;
     localStorage.setItem('graphData', JSON.stringify(graphData));
-    console.log(graphData);
     const workflowData = convertWorkflow(
       { graphData: graphData } as WorkflowRawData,
       workflowName,
@@ -457,7 +452,6 @@ export const HandlerArea: React.FC<{
   const initMockNodeStatus = () => {
     const nodes = graph?.getNodes();
     if (nodes && nodes.length) {
-      console.log(nodes);
       return nodes.map((node, index) => {
         if (node.id === 'start') {
           return { id: 'start', status: 'success' };

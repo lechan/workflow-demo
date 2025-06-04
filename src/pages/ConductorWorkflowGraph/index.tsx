@@ -7,7 +7,8 @@ import { HandlerArea } from './components/HandlerArea'
 import { DndPanel } from './components/DndPanel';
 import { AppProvider } from './components/AppContext';
 import { NodeClick } from "./components/NodeClick";
-import { KeyboardBehavior } from "./components/KeyboardBehavior";
+import { KeyboardBehavior } from './components/KeyboardBehavior';
+import { Tips } from './components/Tips';
 import type { Cell } from '@antv/x6';
 import "./components/index.less";
 
@@ -44,6 +45,7 @@ const ConductorWorkflowGraph: React.FC = () => {
               pannable
               panOptions={{
                 eventTypes: ["leftMouseDown"],
+                modifiers: ['ctrl']
               }}
               connectionOptions={{
                 snap: true,
@@ -90,8 +92,7 @@ const ConductorWorkflowGraph: React.FC = () => {
               }}
               selectOptions={{
                 multiple: true,
-                strict: true,
-                rubberband: false,
+                rubberband: true,
                 showNodeSelectionBox: true,
               }}
               magnetAdsorbedHighlightOptions={{
@@ -117,6 +118,7 @@ const ConductorWorkflowGraph: React.FC = () => {
             <InitNode />
             <NodeClick />
             <KeyboardBehavior />
+            <Tips />
           </div>
         </XFlow>
       </div>

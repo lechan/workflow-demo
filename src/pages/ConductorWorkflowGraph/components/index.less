@@ -55,6 +55,9 @@
   h3 {
     font-size: 16px;
   }
+  p {
+    font-size: 12px;
+  }
   .dnd-item {
     box-sizing: border-box;
     width: 80px;
@@ -100,6 +103,29 @@
   &-running {
     rect[selector="header"] {
       fill: #1890ff;
+    }
+  }
+}
+
+.graph-tips {
+  width: 185px;
+  position: absolute;
+  right: 25px;
+  bottom: 70px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 0;
+  text-align: left;
+  h3 {
+    font-size: 14px;
+  }
+  p {
+    font-size: 12px;
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 }

@@ -170,6 +170,8 @@ const SelectHistoryTask: React.FC<SelectHistoryTaskProps> = ({ visible, onClose 
     
     console.log('mergedCells', sortedCells);
     graph?.fromJSON({ cells: sortedCells })
+    // 关闭弹窗
+    onClose();
   }
 
   // 定义columns在组件内部，这样可以访问到copySelectTask函数
