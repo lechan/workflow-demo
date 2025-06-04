@@ -206,7 +206,7 @@ const SelectHistoryTask: React.FC<SelectHistoryTaskProps> = ({ visible, onClose 
   return (
     <Modal
       title="选择作业集"
-      open={visible}
+      visible={visible}
       onCancel={onClose}
       width={800}
       footer={null}
