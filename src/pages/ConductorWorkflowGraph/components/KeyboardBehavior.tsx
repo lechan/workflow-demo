@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useGraphInstance } from '@antv/xflow';
 import type { Graph } from '@antv/x6';
+import { useAppContext } from './AppContext';
 
 /**
  * 键盘按钮行为组件
@@ -12,17 +13,25 @@ import type { Graph } from '@antv/x6';
  */
 export const KeyboardBehavior: React.FC = () => {
   const graph = useGraphInstance<Graph>();
-
+  const { globalState } = useAppContext(); // 获取全局 state
+  
   useEffect(() => {
     if (!graph) return;
 
     // Bind Delete and Backspace to removal
     graph.bindKey(['delete', 'backspace'], (): boolean => {
+      const { hasSaved } = globalState;
+      if (hasSaved) return false;
       const cells = graph.getSelectedCells();
       if (cells.length > 0) {
-        graph.removeCells(cells);
+        // 过滤掉开始节点
+        const filteredCells = cells.filter(cell => 
+          !(cell.shape === 'rect' && cell.id === 'start')
+        );
+        if (filteredCells.length > 0) {
+          graph.removeCells(filteredCells);
+        }
       }
-      // Prevent default browser behavior (e.g. navigating back)
       return false;
     });
 
@@ -30,7 +39,7 @@ export const KeyboardBehavior: React.FC = () => {
     return () => {
       graph.unbindKey(['delete', 'backspace']);
     };
-  }, [graph]);
+  }, [graph, globalState]);
 
   return null;
 };
