@@ -1,0 +1,525 @@
+{
+  "cells": [
+    {
+      "position": { "x": 100, "y": 50 },
+      "size": { "width": 50, "height": 50 },
+      "attrs": {
+        "text": { "text": "开始" },
+        "body": {
+          "stroke": "#8f8f8f",
+          "strokeWidth": 1,
+          "fill": "#e6f7ff",
+          "rx": 6,
+          "ry": 6
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "start",
+      "markup": [
+        { "tagName": "rect", "selector": "body" },
+        { "tagName": "rect", "selector": "header" },
+        { "tagName": "text", "selector": "label" },
+        { "tagName": "text", "selector": "nodeName" }
+      ],
+      "zIndex": 7,
+      "ports": {
+        "groups": {
+          "output": {
+            "position": "right",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [{ "id": "output", "group": "output" }]
+      }
+    },
+    {
+      "position": { "x": 787, "y": 50 },
+      "size": { "width": 50, "height": 50 },
+      "attrs": {
+        "text": { "text": "结束" },
+        "body": {
+          "stroke": "#8f8f8f",
+          "strokeWidth": 1,
+          "fill": "#fff1f0",
+          "rx": 6,
+          "ry": 6
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "end",
+      "nodeType": "end",
+      "zIndex": 9,
+      "tools": {
+        "items": [
+          {
+            "name": "button-remove",
+            "args": { "x": "100%", "y": 0, "offset": { "x": 0, "y": 0 } }
+          }
+        ]
+      },
+      "ports": {
+        "groups": {
+          "input": {
+            "position": "left",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [{ "id": "input", "group": "input" }]
+      }
+    },
+    {
+      "position": { "x": 210, "y": 30 },
+      "size": { "width": 120, "height": 120 },
+      "attrs": {
+        "text": { "text": "分支节点" },
+        "body": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#f6ffed",
+          "rx": 6,
+          "ry": 6
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "9204c1b3-6051-4773-a846-3e48afb69a3d",
+      "nodeType": "fork",
+      "tools": {
+        "items": [
+          {
+            "name": "button-remove",
+            "args": { "x": "100%", "y": 0, "offset": { "x": 0, "y": 0 } }
+          },
+          { "name": "outputPortsPlusBtn" },
+          { "name": "outputPortsMinusBtn" }
+        ]
+      },
+      "ports": {
+        "groups": {
+          "input": {
+            "position": "left",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          },
+          "output": {
+            "position": "right",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [
+          { "id": "input", "group": "input" },
+          { "id": "output1", "group": "output" },
+          { "id": "output2", "group": "output" }
+        ]
+      },
+      "zIndex": 10
+    },
+    {
+      "position": { "x": 400, "y": 0 },
+      "size": { "width": 180, "height": 80 },
+      "attrs": {
+        "text": { "text": "Shell" },
+        "body": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#fff",
+          "rx": 6,
+          "ry": 6
+        },
+        "header": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#f0f0f0",
+          "rx": 6,
+          "ry": 6,
+          "refWidth": "100%",
+          "height": 32
+        },
+        "label": {
+          "fontSize": 16,
+          "fill": "#333",
+          "refX": 56,
+          "refY": 16,
+          "text": "⌨️Shell"
+        },
+        "nodeName": {
+          "fontSize": 12,
+          "fill": "#666",
+          "rx": 6,
+          "ry": 60,
+          "refY": 56,
+          "text": "这个是shell节点"
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "b35a5fac-6d0a-410a-9f98-b4be3f50a932",
+      "nodeType": "Shell",
+      "markup": [
+        { "tagName": "rect", "selector": "body" },
+        { "tagName": "rect", "selector": "header" },
+        { "tagName": "text", "selector": "label" },
+        { "tagName": "text", "selector": "nodeName" }
+      ],
+      "tools": {
+        "items": [
+          {
+            "name": "button-remove",
+            "args": { "x": "100%", "y": 0, "offset": { "x": 0, "y": 0 } }
+          }
+        ]
+      },
+      "ports": {
+        "groups": {
+          "input": {
+            "position": "left",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          },
+          "output": {
+            "position": "right",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [
+          { "id": "input", "group": "input" },
+          { "id": "output", "group": "output" }
+        ]
+      },
+      "zIndex": 11,
+      "data": {
+        "name": "这个是shell节点",
+        "command": "这个是shell节点",
+        "hasDetailSaved": true
+      }
+    },
+    {
+      "position": { "x": 380, "y": 130 },
+      "size": { "width": 180, "height": 80 },
+      "attrs": {
+        "text": { "text": "Python" },
+        "body": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#fff",
+          "rx": 6,
+          "ry": 6
+        },
+        "header": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#e6f7ff",
+          "rx": 6,
+          "ry": 6,
+          "refWidth": "100%",
+          "height": 32
+        },
+        "label": {
+          "fontSize": 16,
+          "fill": "#333",
+          "refX": 56,
+          "refY": 16,
+          "text": "🐍Python"
+        },
+        "nodeName": {
+          "fontSize": 12,
+          "fill": "#666",
+          "rx": 6,
+          "ry": 60,
+          "refY": 56,
+          "text": "这个是Python节点"
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "adae136f-4395-407e-adeb-f1c76e96ec05",
+      "nodeType": "Python",
+      "markup": [
+        { "tagName": "rect", "selector": "body" },
+        { "tagName": "rect", "selector": "header" },
+        { "tagName": "text", "selector": "label" },
+        { "tagName": "text", "selector": "nodeName" }
+      ],
+      "tools": {
+        "items": [
+          {
+            "name": "button-remove",
+            "args": { "x": "100%", "y": 0, "offset": { "x": 0, "y": 0 } }
+          }
+        ]
+      },
+      "ports": {
+        "groups": {
+          "input": {
+            "position": "left",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          },
+          "output": {
+            "position": "right",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [
+          { "id": "input", "group": "input" },
+          { "id": "output", "group": "output" }
+        ]
+      },
+      "zIndex": 12,
+      "data": {
+        "name": "这个是Python节点",
+        "script": "这个是Python节点",
+        "hasDetailSaved": true
+      }
+    },
+    {
+      "position": { "x": 614, "y": 30 },
+      "size": { "width": 120, "height": 120 },
+      "attrs": {
+        "text": { "text": "汇聚节点" },
+        "body": {
+          "stroke": "#d9d9d9",
+          "strokeWidth": 1,
+          "fill": "#fff7e6",
+          "rx": 6,
+          "ry": 6
+        }
+      },
+      "visible": true,
+      "shape": "rect",
+      "id": "965263e8-2c4e-44db-9756-135e22c2286a",
+      "nodeType": "join",
+      "tools": {
+        "items": [
+          {
+            "name": "button-remove",
+            "args": { "x": "100%", "y": 0, "offset": { "x": 0, "y": 0 } }
+          },
+          { "name": "inputPortsPlusBtn" },
+          { "name": "inputPortsMinusBtn" }
+        ]
+      },
+      "ports": {
+        "groups": {
+          "input": {
+            "position": "left",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          },
+          "output": {
+            "position": "right",
+            "attrs": {
+              "circle": {
+                "stroke": "#D06269",
+                "strokeWidth": 1,
+                "r": 4,
+                "magnet": true
+              }
+            }
+          }
+        },
+        "items": [
+          { "id": "input1", "group": "input" },
+          { "id": "input2", "group": "input" },
+          { "id": "output", "group": "output" }
+        ]
+      },
+      "zIndex": 13
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "521f3bb0-0dda-4d4a-8c4e-69b63eec30e3",
+      "connector": { "name": "smooth" },
+      "source": { "cell": "start", "port": "output" },
+      "target": {
+        "cell": "9204c1b3-6051-4773-a846-3e48afb69a3d",
+        "port": "input"
+      },
+      "zIndex": 14
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "2aba5975-123e-45fa-9d0c-dbb4d3525586",
+      "connector": { "name": "smooth" },
+      "source": {
+        "cell": "9204c1b3-6051-4773-a846-3e48afb69a3d",
+        "port": "output1"
+      },
+      "target": {
+        "cell": "b35a5fac-6d0a-410a-9f98-b4be3f50a932",
+        "port": "input"
+      },
+      "zIndex": 15
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "20bd5f9a-dd41-4291-a7d3-e4229e97efd5",
+      "connector": { "name": "smooth" },
+      "source": {
+        "cell": "9204c1b3-6051-4773-a846-3e48afb69a3d",
+        "port": "output2"
+      },
+      "target": {
+        "cell": "adae136f-4395-407e-adeb-f1c76e96ec05",
+        "port": "input"
+      },
+      "zIndex": 16
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "a269ac0f-61bb-4f51-97e5-1e5eaa4392f9",
+      "connector": { "name": "smooth" },
+      "source": {
+        "cell": "b35a5fac-6d0a-410a-9f98-b4be3f50a932",
+        "port": "output"
+      },
+      "target": {
+        "cell": "965263e8-2c4e-44db-9756-135e22c2286a",
+        "port": "input1"
+      },
+      "zIndex": 17
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "66c5e6e3-c665-4c99-9c03-7b09ac54bc09",
+      "connector": { "name": "smooth" },
+      "source": {
+        "cell": "adae136f-4395-407e-adeb-f1c76e96ec05",
+        "port": "output"
+      },
+      "target": {
+        "cell": "965263e8-2c4e-44db-9756-135e22c2286a",
+        "port": "input2"
+      },
+      "zIndex": 18
+    },
+    {
+      "shape": "edge",
+      "attrs": {
+        "line": {
+          "stroke": "#A2B1C3",
+          "strokeWidth": 1,
+          "targetMarker": { "name": "block", "size": 4 },
+          "strokeDasharray": null,
+          "style": { "animation": "" }
+        }
+      },
+      "id": "c1017c2c-eb5c-46a2-be22-4e650ec2a3a3",
+      "connector": { "name": "smooth" },
+      "source": {
+        "cell": "965263e8-2c4e-44db-9756-135e22c2286a",
+        "port": "output"
+      },
+      "target": { "cell": "end", "port": "input" },
+      "zIndex": 19
+    }
+  ],
+  "systemName": "conductor",
+  "workflowName": "新建作业20250603153349"
+}

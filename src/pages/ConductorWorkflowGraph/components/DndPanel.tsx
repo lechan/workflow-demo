@@ -1,8 +1,9 @@
 import { useDnd } from '@antv/xflow'
 import { useAppContext } from './AppContext'
 import './index.less'
-import React from 'react'
+import React, { useState } from 'react'
 import { Space } from 'antd'
+import SelectHistoryTask from './SelectHistoryTask'
 import { defaultNodes, forkNodes, joinNodes, endNodes } from './nodes'
 import { defaultPorts, forkPorts, joinPorts, endPorts } from './ports'
 import { v4 as uuidv4 } from 'uuid'
@@ -154,10 +155,15 @@ const DndPanel: React.FC<DndPanelProps> = () => {
     }
   }
 
+  const [historyTaskVisible, setHistoryTaskVisible] = useState(false);
+
   const showHistoryTask = () => {
-    // 调用接口获取历史任务
-    // 然后将历史任务渲染到页面上
-  }
+    setHistoryTaskVisible(true);
+  };
+
+  const handleHistoryTaskClose = () => {
+    setHistoryTaskVisible(false);
+  };
 
   return (
     <div className="workflow-dnd-panel">
@@ -195,6 +201,10 @@ const DndPanel: React.FC<DndPanelProps> = () => {
           </div>
         ))}
       </Space>
+      <SelectHistoryTask
+        visible={historyTaskVisible}
+        onClose={handleHistoryTaskClose}
+      />
     </div>
   )
 }
