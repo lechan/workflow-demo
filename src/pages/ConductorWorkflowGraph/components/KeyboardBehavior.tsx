@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useEffect } from 'react';
-import { useGraphInstance } from '@antv/xflow';
+import { useGraphInstance, useHistory } from '@antv/xflow';
 import type { Graph } from '@antv/x6';
 import { useAppContext } from './AppContext';
 
@@ -14,7 +14,7 @@ import { useAppContext } from './AppContext';
 export const KeyboardBehavior: React.FC = () => {
   const graph = useGraphInstance<Graph>();
   const { globalState } = useAppContext(); // 获取全局 state
-  
+  const { undo, redo } = useHistory();
   useEffect(() => {
     if (!graph) return;
 
@@ -35,11 +35,25 @@ export const KeyboardBehavior: React.FC = () => {
       return false;
     });
 
+    // Bind Ctrl+Z to undo
+    graph.bindKey('ctrl+z', () => {
+      undo();
+      return false;
+    });
+
+    // Bind Ctrl+Y to redo
+    graph.bindKey('ctrl+y', () => {
+      redo();
+      return false;
+    });
+
     // Cleanup on unmount
     return () => {
       graph.unbindKey(['delete', 'backspace']);
+      graph.unbindKey('ctrl+z');
+      graph.unbindKey('ctrl+y');
     };
-  }, [graph, globalState]);
+  }, [graph, globalState, undo, redo]);
 
   return null;
 };

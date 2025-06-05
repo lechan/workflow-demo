@@ -5,3 +5,18 @@
 3. 编辑：/workflow?type=edit&id=xxx
 4. 详情：/workflow?type=detail&id=xxx
 5. 历史执行详情：/workflow?type=exec&id=xxx
+
+### 组件介绍
+1. AppContext：公共状态管理
+2. DndPanel：拖拽面板
+3. edges：连线
+4. ExcuteDrawer：执行结果面板
+5. HandlerArea：顶部操作区域
+6. InitNode：初始化节点
+7. KeyboardBehavior：键盘事件
+8. NodeClick：节点点击事件（区分弹出节点配置或者执行结果）
+9. NodeDrawer：节点配置面板
+10. nodes：节点
+11. ports：节点连接端口
+12. SelectHistoryTask：作业集功能
+13. Tips：操作说明
