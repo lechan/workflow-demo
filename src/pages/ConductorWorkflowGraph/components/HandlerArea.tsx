@@ -427,8 +427,19 @@ export const HandlerArea: React.FC<{
     setOptions({ readonly: false });
     setGlobalState(prev => ({ ...prev, hasSaved: false, isExecuting: false })); // 更新全局 hasSaved
   };
-  const reset = () => {
+  const handleClickResetButton = () => {
     console.log('重置');
+    const { confirm } = Modal
+    confirm({
+      title: '操作确认',
+      content: '该操作会重置画布内容，请确认?',
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        reset()
+      },
+    })
+  }
+  const reset = () => {
     localStorage.removeItem('graphData');
     setInitData({
       nodes: [
@@ -656,7 +667,7 @@ export const HandlerArea: React.FC<{
             <Button onClick={save} icon={<SaveOutlined />} type="primary">
               保存
             </Button>
-            <Button onClick={reset} icon={<DeleteOutlined />} danger>
+            <Button onClick={handleClickResetButton} icon={<DeleteOutlined />} danger>
               重置
             </Button>
           </>
