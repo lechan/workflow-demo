@@ -159,17 +159,28 @@ const SelectHistoryTask: React.FC<SelectHistoryTaskProps> = ({ visible, onClose 
     const filteredResult = [...processedCells, ...processedEdges];
     
     // 先合并数组
-    const mergedCells = [...currentCells, ...filteredResult];
+    // const mergedCells = [...currentCells, ...filteredResult];
     
     // 对合并后的数组进行排序，rect在前，edge在后
-    const sortedCells = mergedCells.sort((a, b) => {
-      if (a.shape === 'rect' && b.shape === 'edge') return -1;
-      if (a.shape === 'edge' && b.shape === 'rect') return 1;
-      return 0;
-    });
+    // const sortedCells = mergedCells.sort((a, b) => {
+    //   if (a.shape === 'rect' && b.shape === 'edge') return -1;
+    //   if (a.shape === 'edge' && b.shape === 'rect') return 1;
+    //   return 0;
+    // });
     
-    console.log('mergedCells', sortedCells);
-    graph?.fromJSON({ cells: sortedCells })
+    // console.log('mergedCells', sortedCells)
+    // graph?.fromJSON({ cells: sortedCells })
+    // 添加到历史记录
+    graph?.batchUpdate(() => {
+      // cells处理成node和edge
+      filteredResult.forEach(cell => {
+        if (cell.shape === 'rect') {
+          graph?.addNode({...cell})
+        } else if (cell.shape === 'edge') {
+          graph?.addEdge({...cell})
+        }
+      })
+    })
     // 关闭弹窗
     onClose();
   }
