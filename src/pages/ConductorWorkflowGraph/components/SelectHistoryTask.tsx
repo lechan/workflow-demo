@@ -39,6 +39,7 @@ type Cells = {
     cell: string;
   };
   shape: string;
+  nodeType: string;
   position: {
     x: number;
     y: number;
@@ -158,8 +159,20 @@ const SelectHistoryTask: React.FC<SelectHistoryTaskProps> = ({ visible, onClose 
     
     const filteredResult = [...processedCells, ...processedEdges];
     
-    // 先合并数组
-    // const mergedCells = [...currentCells, ...filteredResult];
+    // 检查程序节点数量
+    const programNodeTypes = ['Shell', 'Python', 'PromQL', 'LocalFile', 'RemoteFile'];
+    const mergedCells = [...currentCells, ...filteredResult];
+    const programNodesCount = mergedCells.filter(cell => 
+      cell.shape === 'rect' && programNodeTypes.includes(cell.nodeType)
+    ).length;
+    
+    if (programNodesCount > 10) {
+      Modal.error({
+        title: '操作失败',
+        content: '程序节点数量不能超过10个',
+      });
+      return;
+    }
     
     // 对合并后的数组进行排序，rect在前，edge在后
     // const sortedCells = mergedCells.sort((a, b) => {

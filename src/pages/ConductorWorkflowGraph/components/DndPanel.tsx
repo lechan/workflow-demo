@@ -1,8 +1,8 @@
-import { useDnd } from '@antv/xflow'
+import { useGraphInstance, useDnd } from '@antv/xflow'
 import { useAppContext } from './AppContext'
 import './index.less'
 import React, { useState } from 'react'
-import { Space } from 'antd'
+import { Space, Modal } from 'antd'
 import SelectHistoryTask from './SelectHistoryTask'
 import { defaultNodes, forkNodes, joinNodes, endNodes } from './nodes'
 import { defaultPorts, forkPorts, joinPorts, endPorts } from './ports'
@@ -20,6 +20,7 @@ interface DndPanelProps {
 }
 
 const DndPanel: React.FC<DndPanelProps> = () => {
+  const graph = useGraphInstance()
   const { globalState } = useAppContext(); // 获取全局 state
   const { hasSaved } = globalState;
   const { startDrag } = useDnd()
@@ -81,44 +82,60 @@ const DndPanel: React.FC<DndPanelProps> = () => {
     node: NodeType,
   ) => {
     if (!hasSaved) {
-      startDrag(
-        {
-          id: uuidv4(),
-          label: node.label,
-          nodeType: node.id,
-          ...defaultNodes,
-          attrs: {
-            ...defaultNodes.attrs,
-            label: {
-              ...defaultNodes.attrs.label,
-              text: node.icon + node.label,
-            },
-            header: {
-              ...defaultNodes.attrs.header,
-              fill: node.background,
-            },
-            nodeName: {
-              ...defaultNodes.attrs.nodeName,
-              text: '未命名'
-            }
-          },
-          ports: {
-            ...defaultPorts,
-          },
-          // draggable: hasSaved,
-          tools: [
-            {
-              name: 'button-remove',
-              args: {
-                x: '100%',
-                y: 0,
-                offset: { x: 0, y: 0 },
+      const currentData = graph?.toJSON();
+      const currentCells = currentData?.cells || [];
+      // 检查程序节点数量
+      const programNodeTypes = ['Shell', 'Python', 'PromQL', 'LocalFile', 'RemoteFile'];
+      const programNodesCount = currentCells.filter(cell => 
+        cell.shape === 'rect' && programNodeTypes.includes(cell.nodeType)
+      ).length;
+      
+      if (programNodesCount === 10) {
+        Modal.error({
+          title: '操作失败',
+          content: '程序节点数量不能超过10个',
+        });
+        return;
+      } else {
+        startDrag(
+          {
+            id: uuidv4(),
+            label: node.label,
+            nodeType: node.id,
+            ...defaultNodes,
+            attrs: {
+              ...defaultNodes.attrs,
+              label: {
+                ...defaultNodes.attrs.label,
+                text: node.icon + node.label,
               },
+              header: {
+                ...defaultNodes.attrs.header,
+                fill: node.background,
+              },
+              nodeName: {
+                ...defaultNodes.attrs.nodeName,
+                text: '未命名'
+              }
             },
-          ],
-        },
-        e,
-      )
+            ports: {
+              ...defaultPorts,
+            },
+            // draggable: hasSaved,
+            tools: [
+              {
+                name: 'button-remove',
+                args: {
+                  x: '100%',
+                  y: 0,
+                  offset: { x: 0, y: 0 },
+                },
+              },
+            ],
+          },
+          e,
+        )
+      }
     }
   }
 
