@@ -1,10 +1,16 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
+interface SystemOption {
+  label: string;
+  value: string;
+}
 // 定义全局状态类型，可拓展其他字段
 interface AppState {
   hasSaved: boolean;
   isExecuting: boolean;
+  systemOptions: SystemOption[];
+  systemName: string;
   currentNodeDetail?: {
     nodeId: string;
     [key: string]: any;
@@ -21,6 +27,8 @@ const defaultState: AppState = {
   hasSaved: false,
   // 是否执行状态
   isExecuting: false,
+  systemOptions: [],
+  systemName: '',
   // 当前选中的节点详情
   currentNodeDetail: undefined
 };
