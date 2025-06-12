@@ -422,10 +422,30 @@ export const HandlerArea: React.FC<{
   const onPaste = () => {
     paste({ offset: 50 });
   };
+  const resetStyles = () => {
+    if (!graph) return;
+    
+    // 重置节点样式
+    graph.getNodes().forEach(node => {
+      node.setAttrByPath('body/stroke', '#d9d9d9');
+      node.setAttrByPath('body/strokeWidth', 1);
+      node.setAttrByPath('header/fill', '#f5f5f5');
+      node.setAttrByPath('statusIndicator/fill', '#f5f5f5');
+    });
+    
+    // 重置边样式
+    graph.getEdges().forEach(edge => {
+      edge.setAttrByPath('line/stroke', '#A2B1C3');
+      edge.setAttrByPath('line/strokeWidth', 1);
+      edge.setAttrByPath('line/strokeDasharray', null);
+    });
+  };
+
   const edit = () => {
     console.log('编辑');
     setOptions({ readonly: false });
     setGlobalState(prev => ({ ...prev, hasSaved: false, isExecuting: false })); // 更新全局 hasSaved
+    resetStyles();
   };
   const handleClickResetButton = () => {
     console.log('重置');

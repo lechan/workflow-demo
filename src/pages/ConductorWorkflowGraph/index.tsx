@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { XFlow, XFlowGraph, Grid, Background, Snapline, History, Clipboard, Control } from "@antv/xflow";
 import { LockOutlined } from '@ant-design/icons';
 import { InitNode } from "./components/InitNode";
@@ -13,10 +13,15 @@ import type { Cell } from '@antv/x6';
 import "./components/index.less";
 
 const ConductorWorkflowGraph: React.FC = () => {
+  const query = new URLSearchParams(window.location.search);
+  const type = query.get('type');
   const [options, setOptions] = useState({
-    readonly: false,
+    readonly: !!type,
   });
   const [systemName, setSystemName] = useState('');
+  useEffect(() => {
+    console.log(options)
+  }, [options])
   return (
     <AppProvider>
       <div className="xflow-guide">
@@ -38,6 +43,7 @@ const ConductorWorkflowGraph: React.FC = () => {
             )}
             <DndPanel />
             <XFlowGraph
+              key={options.readonly}
               className="xflow-graph"
               zoomable
               minScale={0.5}
@@ -90,7 +96,11 @@ const ConductorWorkflowGraph: React.FC = () => {
               connectionEdgeOptions={{
                 ...defaultEdges,
               }}
-              selectOptions={{
+              selectOptions={options.readonly ? {
+                multiple: false,
+                rubberband: false,
+                showNodeSelectionBox: false,
+              } : {
                 multiple: true,
                 rubberband: true,
                 showNodeSelectionBox: true,
