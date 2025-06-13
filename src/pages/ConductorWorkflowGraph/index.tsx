@@ -25,7 +25,7 @@ const ConductorWorkflowGraph: React.FC = () => {
   return (
     <AppProvider>
       <div className="xflow-guide">
-        <XFlow>
+        <XFlow key={options.readonly}>
           <HandlerArea
             options={options}
             setOptions={setOptions}
@@ -43,7 +43,6 @@ const ConductorWorkflowGraph: React.FC = () => {
             )}
             <DndPanel />
             <XFlowGraph
-              key={options.readonly}
               className="xflow-graph"
               zoomable
               minScale={0.5}

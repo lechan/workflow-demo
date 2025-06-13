@@ -6,10 +6,11 @@ import { useGraphInstance } from '@antv/xflow';
 interface ShellFormProps {
   form: any;
   nodeData: any;
+  preNodeData: any;
   onClose: () => void;
 }
 
-const ShellForm: React.FC<ShellFormProps> = ({ form, nodeData, onClose }) => {
+const ShellForm: React.FC<ShellFormProps> = ({ form, nodeData, preNodeData, onClose }) => {
   const graph = useGraphInstance();
   const { globalState, setGlobalState } = useAppContext();
 
@@ -20,7 +21,7 @@ const ShellForm: React.FC<ShellFormProps> = ({ form, nodeData, onClose }) => {
     } else {
       form.resetFields();
     }
-  }, [form, nodeData]);
+  }, [form, nodeData, preNodeData]);
 
   const handleSave = async () => {
     try {

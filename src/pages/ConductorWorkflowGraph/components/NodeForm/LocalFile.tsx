@@ -7,6 +7,7 @@ import { useGraphInstance } from '@antv/xflow';
 interface LocalFileFormProps {
   form: any;
   nodeData: any;
+  preNodeData: any;
   onClose: () => void;
 }
 

@@ -11,9 +11,10 @@ interface NodeDrawerProps {
   visible: boolean;
   onClose: () => void;
   nodeData: any; // 选中的节点数据
+  preNodeData: any[]; // 前置节点数据
 }
 
-const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) => {
+const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData, preNodeData }) => {
   const [form] = Form.useForm();
 
   // 根据节点类型渲染不同的表单内容
@@ -22,15 +23,15 @@ const NodeDrawer: React.FC<NodeDrawerProps> = ({ visible, onClose, nodeData }) =
     const { store: { data: { nodeType } } } = nodeData
     switch (nodeType) {
       case 'Shell':
-        return <ShellForm form={form} nodeData={nodeData} onClose={onClose} />;
+        return <ShellForm form={form} nodeData={nodeData} preNodeData={preNodeData} onClose={onClose} />;
       case 'Python':
-        return <PythonForm form={form} nodeData={nodeData} onClose={onClose} />;
+        return <PythonForm form={form} nodeData={nodeData} preNodeData={preNodeData} onClose={onClose} />;
       case 'PromQL':
-        return <PromQLForm form={form} nodeData={nodeData} onClose={onClose} />;
+        return <PromQLForm form={form} nodeData={nodeData} preNodeData={preNodeData} onClose={onClose} />;
       case 'LocalFile':
-        return <LocalFileForm form={form} nodeData={nodeData} onClose={onClose} />;
+        return <LocalFileForm form={form} nodeData={nodeData} preNodeData={preNodeData} onClose={onClose} />;
       case 'RemoteFile':
-        return <RemoteFileForm form={form} nodeData={nodeData} onClose={onClose} />;
+        return <RemoteFileForm form={form} nodeData={nodeData} preNodeData={preNodeData} onClose={onClose} />;
       default:
         return null;
     }

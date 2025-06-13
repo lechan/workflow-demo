@@ -6,6 +6,7 @@ import { useGraphInstance } from '@antv/xflow';
 interface RemoteFileFormProps {
   form: any;
   nodeData: any;
+  preNodeData: any;
   onClose: () => void;
 }
 
