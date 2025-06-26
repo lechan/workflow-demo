@@ -88,6 +88,16 @@
   font-size: 16px;
 }
 
+/* 定义运行中的边动画 */
+@keyframes running-line {
+  0% {
+    stroke-dashoffset: 20;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* 节点状态样式 */
 .node-status {
   &-success {

@@ -556,11 +556,23 @@ export const HandlerArea: React.FC<{
             });
           } else if (status === 'running') {
             const incomingEdges = graph.getIncomingEdges(node);
+            const outgoingEdges = graph.getOutgoingEdges(node);
             incomingEdges?.forEach((edge) => {
               edge.setAttrByPath('line/stroke', statusColor['running']);
               edge.setAttrByPath('line/strokeWidth', 2);
               edge.setAttrByPath('line/strokeDasharray', '5,5');
+              // 添加动画效果
+              edge.setAttrByPath('line/strokeDashoffset', 10);
+              edge.setAttrByPath('line/animation', 'running-line 0.5s linear infinite');
             });
+            outgoingEdges?.forEach((edge) => {
+              edge.setAttrByPath('line/stroke', statusColor['running']);
+              edge.setAttrByPath('line/strokeWidth', 2);
+              edge.setAttrByPath('line/style/strokeDasharray', '5,5');
+              // 添加动画效果
+              edge.setAttrByPath('line/strokeDashoffset', 10);
+              edge.setAttrByPath('line/style/animation', 'running-line 0.5s linear infinite');
+            })
           }
         }
       });
