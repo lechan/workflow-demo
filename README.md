@@ -1,57 +1,56 @@
-# 工作流编排画布 demo
-## React + TypeScript + Vite
+# 工作流编排画布 Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 项目简介
 
-Currently, two official plugins are available:
+这是一个基于React + TypeScript + Vite的工作流编排画布系统，主要用于可视化创建和管理工作流。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 主要功能
 
-## Expanding the ESLint configuration
+- 可视化拖拽节点创建工作流
+- 支持多种节点类型：Shell、Python、PromQL、LocalFile、RemoteFile
+- 工作流执行状态可视化
+- 历史任务查看和管理
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 技术栈
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- React 18
+- TypeScript 5
+- Vite 4
+- XFlow 图形库
+
+## 快速开始
+
+1. 安装依赖
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. 启动开发服务器
+```bash
+npm run dev
 ```
 
-<img src="./public/demo.jpg" />
+3. 构建生产版本
+```bash
+npm run build
+```
+
+## 项目结构
+
+```
+├── src/
+│   ├── pages/
+│   │   └── ConductorWorkflowGraph/  # 工作流画布主界面
+│   │       ├── components/         # 画布相关组件
+│   │       └── index.tsx          # 画布入口
+```
+
+## 开发配置
+
+项目使用Vite构建，配置了ESLint进行代码检查。
+
+如需启用更严格的类型检查规则，请参考[ESLint配置说明](#eslint配置)。
+
+## 截图预览
+
+<img src="./public/demo.jpg" alt="工作流画布截图"/>
